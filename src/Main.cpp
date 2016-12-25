@@ -14,7 +14,7 @@ void Wicher::DB::Main::run(){
 		int sock = cm->get_connection();
 		if(sock > 0){
 			Connection * conn = new Connection(sock);
-			new boost::thread(this, &Wicher::DB::Main::check_connection, conn);
+			new boost::thread(&Wicher::DB::Main::check_connection, this, conn);
 		}
 	}
 }

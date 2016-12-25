@@ -14,7 +14,7 @@ Wicher::DB::Connection::~Connection(){
 }
 
 void Wicher::DB::Connection::run(){
-	this->thread = new boost::thread(this, &Wicher::DB::Connection::connection_thread);
+	this->thread = new boost::thread(&Wicher::DB::Connection::connection_thread, this);
 }
 
 void Wicher::DB::Connection::connection_thread(){
