@@ -44,18 +44,16 @@ Wicher::DB::ConnectionManager::ConnectionManager(int port){
 Wicher::DB::ConnectionManager::~ConnectionManager(){
     Log::server("Closing connection...");
 #ifdef WIN
-    closesocket(clientsock);
     closesocket(sock);
     Log::server("Cleanning up Winsock2...");
     WSACleanup();
 #elif defined(UNI)
-    close(clientsock);
-	close(sock);
+    close(sock);
 #endif
-	Log::server("Done.");
+    Log::server("Done.");
 }
 
-bool Wicher::DB::ConnectionManager::get_connection(){
+int Wicher::DB::ConnectionManager::get_connection(){
     Log::info("Waiting for connection...");
     struct sockaddr_in client_addr;
 #ifdef WIN
@@ -63,14 +61,13 @@ bool Wicher::DB::ConnectionManager::get_connection(){
 #elif defined(UNI)
     socklen_t client_addr_len = sizeof(client_addr);
 #endif
-	clientsock = accept(sock, (struct sockaddr*) &client_addr, &client_addr_len);
+	int clientsock = accept(sock, (struct sockaddr*) &client_addr, &client_addr_len);
 	if(clientsock < 0){
 		perror("Error when accepting connection");
-		return false;
 	}else{
 		Log::server("Got connection");
-		return true;
 	}
+	return clientsock;
 }
 
 /*std::string Wicher::DB::ConnectionManager::recv_msg(){
@@ -89,7 +86,7 @@ bool Wicher::DB::ConnectionManager::get_connection(){
     return tr;
 }*/
 
-std::string Wicher::DB::ConnectionManager::recv_msg(){
+/*std::string Wicher::DB::ConnectionManager::recv_msg(){
     uint16_t msize;
 #ifdef WIN
     int res = recv(clientsock, (char*) &msize, 2, 0);
@@ -116,7 +113,7 @@ std::string Wicher::DB::ConnectionManager::recv_msg(){
     if(res == msize){
         return tr;
     }else return std::string();
-}
+}*/
 
 /*bool Wicher::DB::ConnectionManager::send_msg(std::string msg){
     unsigned int res = 0;
@@ -130,7 +127,7 @@ std::string Wicher::DB::ConnectionManager::recv_msg(){
     }
     return res == msg.size() + 1;
 }*/
-bool Wicher::DB::ConnectionManager::send_msg(std::string msg){
+/*bool Wicher::DB::ConnectionManager::send_msg(std::string msg){
     if(msg.size()+1 > MAX_BUFF){
         Log::server("Failed to send message (message too big)");
         return false;
@@ -155,9 +152,9 @@ bool Wicher::DB::ConnectionManager::send_msg(std::string msg){
         res += res_tmp;
     }
 	return res == msize;
-}
+}*/
 
-bool Wicher::DB::ConnectionManager::is_up(){
+/*bool Wicher::DB::ConnectionManager::is_up(){
 #ifdef WIN
     char buffer[256];
     int buffersize = 256;
@@ -185,4 +182,4 @@ bool Wicher::DB::ConnectionManager::is_up(){
     }
     return true;
 #endif
-}
+}*/

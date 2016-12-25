@@ -1,5 +1,5 @@
-#ifndef CONNECTIONMANAGER_H
-#define CONNECTIONMANAGER_H
+#ifndef CONNECTION_H
+#define CONNECTION_H
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -22,16 +22,23 @@
 #define UNI
 #endif
 
+#include <boost/thread.hpp>
+
 namespace Wicher{
     namespace DB{
-        class ConnectionManager{
+        class Connection{
             public:
-                ConnectionManager(int port);
-                int get_connection();
-                ~ConnectionManager();
+                Connection(int sock);
+				void run();
+				void connection_thread();
+                bool is_up();
+                std::string recv_msg();
+                bool send_msg(std::string msg);
+                ~Connection();
 
             private:
-                int sock;
+                int clientsock;
+				boost::thread * thread;
         };
     }
 }
