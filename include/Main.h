@@ -13,6 +13,7 @@ namespace Wicher{
                 Main(int port);
                 void run();
 				void check_connection(Connection * conn);
+				void shutdown();
                 ~Main();
 
             private:

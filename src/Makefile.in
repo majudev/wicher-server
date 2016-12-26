@@ -88,8 +88,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = wicher_server$(EXEEXT)
-@USE_WINSOCK_TRUE@am__append_1 = -lws2_32
+bin_PROGRAMS = wicher-server$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_boost_base.m4 \
@@ -113,8 +112,8 @@ am_wicher_server_OBJECTS = wicher_server-ConnectionManager.$(OBJEXT) \
 	wicher_server-DatabaseHelper.$(OBJEXT) \
 	wicher_server-DatabaseManager.$(OBJEXT) \
 	wicher_server-DatabaseUpdater.$(OBJEXT) \
-	wicher_server-Log.$(OBJEXT) wicher_server-_main.$(OBJEXT) \
-	wicher_server-Main.$(OBJEXT) \
+	wicher_server-UID.$(OBJEXT) wicher_server-Log.$(OBJEXT) \
+	wicher_server-_main.$(OBJEXT) wicher_server-Main.$(OBJEXT) \
 	wicher_server-MessageParser.$(OBJEXT) \
 	wicher_server-Toolkit.$(OBJEXT)
 wicher_server_OBJECTS = $(am_wicher_server_OBJECTS)
@@ -197,7 +196,6 @@ BOOST_THREAD_LIB = @BOOST_THREAD_LIB@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
-CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
 CXXDEPMODE = @CXXDEPMODE@
@@ -208,9 +206,7 @@ DEPDIR = @DEPDIR@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
-EGREP = @EGREP@
 EXEEXT = @EXEEXT@
-GREP = @GREP@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -301,15 +297,15 @@ wicher_server_SOURCES = ConnectionManager.cpp \
 	DatabaseHelper.cpp \
 	DatabaseManager.cpp \
 	DatabaseUpdater.cpp \
+	UID.cpp \
 	Log.cpp \
 	_main.cpp \
 	Main.cpp \
 	MessageParser.cpp \
 	Toolkit.cpp
 
-wicher_server_CPPFLAGS = $(AM_CPPFLAGS) $(BOOST_CPPFLAGS)
-wicher_server_LDADD = $(BOOST_LDFLAGS) $(BOOST_THREAD_LIB) \
-	$(BOOST_SYSTEM_LIB) $(am__append_1)
+wicher_server_CPPFLAGS = $(AM_CPPFLAGS) $(BOOST_CPPFLAGS) $(jansson_CFLAGS)
+wicher_server_LDADD = $(BOOST_LDFLAGS) $(BOOST_THREAD_LIB) $(BOOST_SYSTEM_LIB) $(jansson_LIBS)
 all: all-am
 
 .SUFFIXES:
@@ -386,8 +382,8 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
-wicher_server$(EXEEXT): $(wicher_server_OBJECTS) $(wicher_server_DEPENDENCIES) $(EXTRA_wicher_server_DEPENDENCIES) 
-	@rm -f wicher_server$(EXEEXT)
+wicher-server$(EXEEXT): $(wicher_server_OBJECTS) $(wicher_server_DEPENDENCIES) $(EXTRA_wicher_server_DEPENDENCIES) 
+	@rm -f wicher-server$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(wicher_server_OBJECTS) $(wicher_server_LDADD) $(LIBS)
 
 mostlyclean-compile:
@@ -408,6 +404,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-Main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-MessageParser.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-Toolkit.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-UID.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-_main.Po@am__quote@
 
 .cpp.o:
@@ -537,6 +534,20 @@ wicher_server-DatabaseUpdater.obj: DatabaseUpdater.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseUpdater.cpp' object='wicher_server-DatabaseUpdater.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseUpdater.obj `if test -f 'DatabaseUpdater.cpp'; then $(CYGPATH_W) 'DatabaseUpdater.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseUpdater.cpp'; fi`
+
+wicher_server-UID.o: UID.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-UID.o -MD -MP -MF $(DEPDIR)/wicher_server-UID.Tpo -c -o wicher_server-UID.o `test -f 'UID.cpp' || echo '$(srcdir)/'`UID.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-UID.Tpo $(DEPDIR)/wicher_server-UID.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='UID.cpp' object='wicher_server-UID.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-UID.o `test -f 'UID.cpp' || echo '$(srcdir)/'`UID.cpp
+
+wicher_server-UID.obj: UID.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-UID.obj -MD -MP -MF $(DEPDIR)/wicher_server-UID.Tpo -c -o wicher_server-UID.obj `if test -f 'UID.cpp'; then $(CYGPATH_W) 'UID.cpp'; else $(CYGPATH_W) '$(srcdir)/UID.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-UID.Tpo $(DEPDIR)/wicher_server-UID.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='UID.cpp' object='wicher_server-UID.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-UID.obj `if test -f 'UID.cpp'; then $(CYGPATH_W) 'UID.cpp'; else $(CYGPATH_W) '$(srcdir)/UID.cpp'; fi`
 
 wicher_server-Log.o: Log.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-Log.o -MD -MP -MF $(DEPDIR)/wicher_server-Log.Tpo -c -o wicher_server-Log.o `test -f 'Log.cpp' || echo '$(srcdir)/'`Log.cpp
