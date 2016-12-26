@@ -21,17 +21,16 @@ namespace Wicher{
             public:
                 Connection(int sock);
 				void run();
-				void connection_thread();
                 bool is_up();
                 std::string recv_msg();
                 bool send_msg(std::string msg);
                 ~Connection();
 				
 				void log(std::string msg);
+				boost::thread * thread;
+				int clientsock;
 
             private:
-                int clientsock;
-				boost::thread * thread;
 				std::string prefix;
         };
     }

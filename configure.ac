@@ -1,4 +1,4 @@
-AC_INIT([Wicher Server], [0.1], [maju@majudev.net])
+AC_INIT([Wicher Server], [0.1.1], [maju@majudev.net])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_MACRO_DIR([m4])
 AX_BOOST_BASE([1.58])

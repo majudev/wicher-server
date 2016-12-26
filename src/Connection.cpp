@@ -3,7 +3,7 @@
 #define MAX_BUFF 65535
 
 Wicher::DB::Connection::Connection(int sock) : clientsock(sock), thread(NULL){
-	this->prefix = "[C-" + UID::get_singleton().get_next_str() + "] ";
+	this->prefix = "[C" + UID::get_singleton().get_next_str() + "] ";
 }
 
 Wicher::DB::Connection::~Connection(){
@@ -14,10 +14,6 @@ Wicher::DB::Connection::~Connection(){
 }
 
 void Wicher::DB::Connection::run(){
-	this->thread = new boost::thread(&Wicher::DB::Connection::connection_thread, this);
-}
-
-void Wicher::DB::Connection::connection_thread(){
 	this->log("Thread spawned.");
 	std::string msg = recv_msg();
 	while(!msg.empty()){
