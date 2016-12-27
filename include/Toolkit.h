@@ -13,7 +13,9 @@ namespace Wicher{
             public:
                 static std::string itostr(int i);
                 static int strtoi(std::string str);
+                static bool strcheck(const char * str1, const char * str2);
                 static bool strcheck(char * str1, const char * str2);
+                static bool strcheck(char * str1, char * str2);
         };
     }
 }

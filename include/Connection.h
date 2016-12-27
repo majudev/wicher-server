@@ -10,8 +10,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+#include "MessageParser.h"
 #include "Toolkit.h"
-#include "UID.h"
+#include "ConnectionLogger.h"
 
 #include <boost/thread.hpp>
 
@@ -26,12 +27,13 @@ namespace Wicher{
                 bool send_msg(std::string msg);
                 ~Connection();
 				
-				void log(std::string msg);
 				boost::thread * thread;
 				int clientsock;
 
             private:
-				std::string prefix;
+				bool closed;
+				ConnectionLogger * logger;
+				MessageParser * mp;
         };
     }
 }

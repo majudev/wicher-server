@@ -6,16 +6,19 @@
 #include <jansson.h>
 #include "DatabaseManager.h"
 #include "Toolkit.h"
+#include "AccountsManager.h"
+#include "ConnectionLogger.h"
 
 namespace Wicher{
     namespace DB{
         class MessageParser{
             public:
-                MessageParser();
+                MessageParser(ConnectionLogger * logger);
                 std::string parse(std::string);
                 virtual ~MessageParser();
 
             private:
+				ConnectionLogger * logger;
                 DatabaseManager * db;
         };
     }

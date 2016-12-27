@@ -11,11 +11,13 @@ using namespace Wicher::DB;
 
 bool accept_new = true;
 int port = 63431;
+int sock;
 std::vector<Wicher::DB::Connection *> connections;
 
 void sigc_handler(int signum){
 	if(signum == SIGUSR1){
 		accept_new = false;
+		close(sock);
 		Wicher::DB::Log::info("Received USR1. No longer accepting connections.");
 	}
 }
@@ -34,7 +36,7 @@ int main(int argc, char * argv[]){
     Log::info("Starting...");
     Log::info("Setting up server socket...");
     Log::info("\t-> Creating socket");
-	int sock = socket(AF_INET, SOCK_STREAM, 0);
+	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if(sock < 0){
 		perror("\t   Error when creating socket");
 		exit(1);
@@ -60,6 +62,7 @@ int main(int argc, char * argv[]){
 		exit(1);
 	}*/
 	Log::info("Server socket set up successfully.");
+	boost::thread th(check_thread);
 	while(accept_new){
 		Log::server("Waiting for new connection...");
 		struct sockaddr_in client_addr;
@@ -82,9 +85,8 @@ int main(int argc, char * argv[]){
 	}
 	check_thread_run = false;
 	Log::info("Waiting for all connections to die...");
-	unsigned int imax = connections.size();
-	for(unsigned int i = 0; i < imax; ++i){
-		Log::info(std::string("Terminating connection ") + Toolkit::itostr(i+1) + std::string("/") + Toolkit::itostr(imax));
+	for(unsigned int i = 0; i < connections.size(); ++i){
+		Log::info(std::string("Terminating connection ") + Toolkit::itostr(i+1) + std::string("/") + Toolkit::itostr(connections.size()));
 		connections[i]->thread->join();
 	}
     Log::info("Quitting...");

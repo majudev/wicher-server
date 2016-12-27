@@ -1,4 +1,5 @@
 #include "main.h"
+#include <boost/chrono.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 bool check_thread_run = true;
@@ -18,7 +19,9 @@ void check_thread(){
 		for(std::vector<Wicher::DB::Connection*>::iterator iter = connections.begin(); iter != connections.end(); ++iter){
 			if(*iter == NULL){
 				connections.erase(iter);
+				--iter;
 			}
 		}
+		boost::this_thread::sleep_for(boost::chrono::milliseconds(500));
 	}
 }

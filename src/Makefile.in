@@ -111,9 +111,11 @@ am_wicher_server_OBJECTS = wicher_server-DatabaseCreator.$(OBJEXT) \
 	wicher_server-DatabaseManager.$(OBJEXT) \
 	wicher_server-DatabaseUpdater.$(OBJEXT) \
 	wicher_server-MessageParser.$(OBJEXT) \
+	wicher_server-AccountsManager.$(OBJEXT) \
 	wicher_server-Connection.$(OBJEXT) wicher_server-UID.$(OBJEXT) \
-	wicher_server-Log.$(OBJEXT) wicher_server-Toolkit.$(OBJEXT) \
-	wicher_server-main.$(OBJEXT) \
+	wicher_server-Log.$(OBJEXT) \
+	wicher_server-ConnectionLogger.$(OBJEXT) \
+	wicher_server-Toolkit.$(OBJEXT) wicher_server-main.$(OBJEXT) \
 	wicher_server-main_thread_utils.$(OBJEXT) \
 	wicher_server-main_socket_utils.$(OBJEXT)
 wicher_server_OBJECTS = $(am_wicher_server_OBJECTS)
@@ -296,9 +298,11 @@ wicher_server_SOURCES = DatabaseCreator.cpp \
 	DatabaseManager.cpp \
 	DatabaseUpdater.cpp \
 	MessageParser.cpp \
+	AccountsManager.cpp \
 	Connection.cpp \
 	UID.cpp \
 	Log.cpp \
+	ConnectionLogger.cpp \
 	Toolkit.cpp \
 	main.cpp \
 	main_thread_utils.cpp \
@@ -392,7 +396,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-AccountsManager.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-Connection.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-ConnectionLogger.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseCreator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseDropper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseGetter.Po@am__quote@
@@ -521,6 +527,20 @@ wicher_server-MessageParser.obj: MessageParser.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-MessageParser.obj `if test -f 'MessageParser.cpp'; then $(CYGPATH_W) 'MessageParser.cpp'; else $(CYGPATH_W) '$(srcdir)/MessageParser.cpp'; fi`
 
+wicher_server-AccountsManager.o: AccountsManager.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-AccountsManager.o -MD -MP -MF $(DEPDIR)/wicher_server-AccountsManager.Tpo -c -o wicher_server-AccountsManager.o `test -f 'AccountsManager.cpp' || echo '$(srcdir)/'`AccountsManager.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-AccountsManager.Tpo $(DEPDIR)/wicher_server-AccountsManager.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='AccountsManager.cpp' object='wicher_server-AccountsManager.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-AccountsManager.o `test -f 'AccountsManager.cpp' || echo '$(srcdir)/'`AccountsManager.cpp
+
+wicher_server-AccountsManager.obj: AccountsManager.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-AccountsManager.obj -MD -MP -MF $(DEPDIR)/wicher_server-AccountsManager.Tpo -c -o wicher_server-AccountsManager.obj `if test -f 'AccountsManager.cpp'; then $(CYGPATH_W) 'AccountsManager.cpp'; else $(CYGPATH_W) '$(srcdir)/AccountsManager.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-AccountsManager.Tpo $(DEPDIR)/wicher_server-AccountsManager.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='AccountsManager.cpp' object='wicher_server-AccountsManager.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-AccountsManager.obj `if test -f 'AccountsManager.cpp'; then $(CYGPATH_W) 'AccountsManager.cpp'; else $(CYGPATH_W) '$(srcdir)/AccountsManager.cpp'; fi`
+
 wicher_server-Connection.o: Connection.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-Connection.o -MD -MP -MF $(DEPDIR)/wicher_server-Connection.Tpo -c -o wicher_server-Connection.o `test -f 'Connection.cpp' || echo '$(srcdir)/'`Connection.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-Connection.Tpo $(DEPDIR)/wicher_server-Connection.Po
@@ -562,6 +582,20 @@ wicher_server-Log.obj: Log.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Log.cpp' object='wicher_server-Log.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-Log.obj `if test -f 'Log.cpp'; then $(CYGPATH_W) 'Log.cpp'; else $(CYGPATH_W) '$(srcdir)/Log.cpp'; fi`
+
+wicher_server-ConnectionLogger.o: ConnectionLogger.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-ConnectionLogger.o -MD -MP -MF $(DEPDIR)/wicher_server-ConnectionLogger.Tpo -c -o wicher_server-ConnectionLogger.o `test -f 'ConnectionLogger.cpp' || echo '$(srcdir)/'`ConnectionLogger.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-ConnectionLogger.Tpo $(DEPDIR)/wicher_server-ConnectionLogger.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ConnectionLogger.cpp' object='wicher_server-ConnectionLogger.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-ConnectionLogger.o `test -f 'ConnectionLogger.cpp' || echo '$(srcdir)/'`ConnectionLogger.cpp
+
+wicher_server-ConnectionLogger.obj: ConnectionLogger.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-ConnectionLogger.obj -MD -MP -MF $(DEPDIR)/wicher_server-ConnectionLogger.Tpo -c -o wicher_server-ConnectionLogger.obj `if test -f 'ConnectionLogger.cpp'; then $(CYGPATH_W) 'ConnectionLogger.cpp'; else $(CYGPATH_W) '$(srcdir)/ConnectionLogger.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-ConnectionLogger.Tpo $(DEPDIR)/wicher_server-ConnectionLogger.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ConnectionLogger.cpp' object='wicher_server-ConnectionLogger.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-ConnectionLogger.obj `if test -f 'ConnectionLogger.cpp'; then $(CYGPATH_W) 'ConnectionLogger.cpp'; else $(CYGPATH_W) '$(srcdir)/ConnectionLogger.cpp'; fi`
 
 wicher_server-Toolkit.o: Toolkit.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-Toolkit.o -MD -MP -MF $(DEPDIR)/wicher_server-Toolkit.Tpo -c -o wicher_server-Toolkit.o `test -f 'Toolkit.cpp' || echo '$(srcdir)/'`Toolkit.cpp

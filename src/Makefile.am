@@ -7,9 +7,11 @@ wicher_server_SOURCES = DatabaseCreator.cpp \
 	DatabaseManager.cpp \
 	DatabaseUpdater.cpp \
 	MessageParser.cpp \
+	AccountsManager.cpp \
 	Connection.cpp \
 	UID.cpp \
 	Log.cpp \
+	ConnectionLogger.cpp \
 	Toolkit.cpp \
 	main.cpp \
 	main_thread_utils.cpp \
