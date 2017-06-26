@@ -12,19 +12,7 @@ int Wicher::DB::Toolkit::strtoi(std::string str){
     return i;
 }
 
-bool Wicher::DB::Toolkit::strcheck(const char * str1, const char * str2){
-	std::string s1(str1);
-	std::string s2(str2);
-	return s1 == s2;
-}
-
 bool Wicher::DB::Toolkit::strcheck(char * str1, const char * str2){
-	std::string s1(str1);
-	std::string s2(str2);
-	return s1 == s2;
-}
-
-bool Wicher::DB::Toolkit::strcheck(char * str1, char * str2){
 	std::string s1(str1);
 	std::string s2(str2);
 	return s1 == s2;

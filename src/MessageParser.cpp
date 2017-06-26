@@ -1,8 +1,7 @@
 #include "MessageParser.h"
-#include "rapidjson/document.h"
 
-Wicher::DB::MessageParser::MessageParser(ConnectionLogger * logger) : logger(logger), db(NULL){
-    //db = new DatabaseManager(std::string("/tmp/") + login + std::string("/database.db"));
+Wicher::DB::MessageParser::MessageParser(){
+    db = new DatabaseManager("database.db");
 }
 
 Wicher::DB::MessageParser::~MessageParser(){
@@ -27,38 +26,7 @@ std::string r(){
 }
 
 std::string Wicher::DB::MessageParser::parse(std::string msg){
-	using namespace rapidjson;
-	Document document;
-	document.Parse(msg.c_str());
-	if(!document.IsObject()){
-		logger->log("Wrong JSON received!");
-		return std::string("{\"response\":\"wrong_json\",\"longtext\":\"Invalid root.\"}");
-	}else if(!document.HasMember("request") || !document["request"].IsString()){
-		logger->log("Wrong JSON received!");
-		return std::string("{\"response\":\"wrong_json\",\"longtext\":\"'request' is not valid string.\"}");
-	}else if(Toolkit::strcheck(document["request"].GetString(), "login")){ //Login request.
-		if(!document.HasMember("login") || !document.HasMember("password")){
-			logger->log("Wrong JSON received!");
-			return std::string("{\"response\":\"wrong_json\",\"longtext\":\"Invalid login request data.\"}");
-		}
-		std::string login(document["login"].GetString());
-		std::string password(document["password"].GetString());
-		if(AccountsManager::get_singleton().validate(login, password)){
-			this->db = new DatabaseManager(AccountsManager::get_singleton().get_database_path(login));
-			logger->log(std::string("Logged in as ") + login + std::string(""));
-			return std::string("{\"response\":\"ok\"}");
-		}else{
-			logger->log("Attempted to log in with invalid data. Aborting.");
-			return std::string("{\"response\":\"wrong_login\"}");
-		}
-	}else if(this->db == NULL){ //Wrong operation
-		logger->log("Attempted to do something without login. Aborting.");
-		return std::string("{\"response\":\"login_required\"}");
-	}else{
-		logger->log("Wrong request received.");
-		return std::string("{\"response\":\"wrong_query\",\"longtext\":\"Wrong 'request'.\"}");
-	}
-    /*std::string passwd("74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b");
+    std::string passwd("74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b");
     json_error_t error;
     json_t * master_root = json_loads(msg.c_str(), 0, &error);
     if(!master_root){
@@ -566,5 +534,5 @@ std::string Wicher::DB::MessageParser::parse(std::string msg){
         return std::string("{\"response\":\"wrong_json\",\"longtext\":\"'request' is not valid string.\"}");
     }
     free(master_root);
-    return std::string("{\"response\":\"unknown_error\",\"longtext\":\"Parser reached end of funtion.\"}");*/
+    return std::string("{\"response\":\"unknown_error\",\"longtext\":\"Parser reached end of funtion.\"}");
 }
