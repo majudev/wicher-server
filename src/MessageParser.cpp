@@ -1,5 +1,7 @@
 #include "MessageParser.h"
 
+namespace spd = spdlog;
+
 Wicher::DB::MessageParser::MessageParser(){
     db = new DatabaseManager("database.db");
 }
@@ -30,11 +32,11 @@ std::string Wicher::DB::MessageParser::parse(std::string msg){
     json_error_t error;
     json_t * master_root = json_loads(msg.c_str(), 0, &error);
     if(!master_root){
-        Log::server(std::string("Error when parsing message:") + std::string(error.text));
-        Log::server(std::string("\tSource:") + std::string(error.source));
-        Log::server(std::string("\tLine:") + Toolkit::itostr(error.line));
-        Log::server(std::string("\tColumn:") + Toolkit::itostr(error.column));
-        Log::server(std::string("\tPosition [bytes]:") + Toolkit::itostr(error.position));
+        spd::get("console")->error(std::string("Error when parsing message:") + std::string(error.text));
+        spd::get("console")->error(std::string("\tSource:") + std::string(error.source));
+        spd::get("console")->error(std::string("\tLine:") + Toolkit::itostr(error.line));
+        spd::get("console")->error(std::string("\tColumn:") + Toolkit::itostr(error.column));
+        spd::get("console")->error(std::string("\tPosition [bytes]:") + Toolkit::itostr(error.position));
         return std::string("{\"response\":\"wrong_json\",\"longtext\":\"Invalid root.\"}");
     }else{
         const char * request_str = json_string_value(json_object_get(master_root, "request"));

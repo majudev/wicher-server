@@ -1,5 +1,7 @@
 #include "Main.h"
 
+namespace spd = spdlog;
+
 Wicher::DB::Main::Main(int argc, char * argv[]){
     int port = 63431;
 	if(argc == 2 && Toolkit::strcheck(argv[1], "-h")){
@@ -17,20 +19,20 @@ Wicher::DB::Main::Main(int argc, char * argv[]){
 
 void Wicher::DB::Main::run(){
     if(!cm->get_connection()){
-        Log::info("Failed to get connection. Exiting.");
+        spd::get("console")->info("Failed to get connection. Exiting.");
         exit(0);
     }
     while(cm->is_up()){
         std::string query = cm->recv_msg();
         if(query.empty() || query == std::string("BYE")){
-            Log::client("Empty query or BYE request. Exiting.");
+            spd::get("console")->info("Empty query or BYE request. Exiting.");
             break;
-        }else Log::client(std::string("Query: ") + query);
+        }else spd::get("console")->info(std::string("Query: ") + query);
         std::string response = mp->parse(query);
         if(cm->send_msg(response)){
-            Log::server(std::string("Response: ") + response);
+            spd::get("console")->info(std::string("Response: ") + response);
         }else{
-            Log::server("Failed to send response. Exiting.");
+            spd::get("console")->info("Failed to send response. Exiting.");
             break;
         }
     }

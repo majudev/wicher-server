@@ -5,17 +5,13 @@
 #include <cstdlib>
 #include <string>
 
-#include "Log.h"
+#include "spdlog/spdlog.h"
 
-namespace Wicher{
-    namespace DB{
-        class Toolkit{
-            public:
-                static std::string itostr(int i);
-                static int strtoi(std::string str);
-                static bool strcheck(char * str1, const char * str2);
-        };
-    }
-}
+class Toolkit{
+    public:
+        static std::string itostr(int i);
+        static int strtoi(std::string str);
+        static bool strcheck(char * str1, const char * str2);
+};
 
 #endif // UTILS_H_INCLUDED

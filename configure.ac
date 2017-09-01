@@ -8,6 +8,17 @@ AC_PROG_CXX
 AC_CONFIG_HEADERS([buildconfig.h])
 PKG_CHECK_MODULES([jansson], [jansson])
 
+AX_CXX_COMPILE_STDCXX([11], [ext], [mandatory])
+
+AC_CHECK_FUNCS([syslog])
+     if test $ac_cv_func_syslog = no; then
+       # syslog is not in the default libraries.  See if it's in some other.
+       for lib in bsd socket inet; do
+         AC_CHECK_LIB([$lib], [syslog], [AC_DEFINE([HAVE_SYSLOG])
+           LIBS="-l$lib $LIBS"; break])
+       done
+     fi
+
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile

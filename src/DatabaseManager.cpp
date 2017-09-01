@@ -10,6 +10,8 @@
 *         [arr]  [arr]  [arr] [arr] [arr] [obj]
 */
 
+namespace spd = spdlog;
+
 Wicher::DB::DatabaseManager::DatabaseManager(std::string path) : path(path), root(nullptr), items(nullptr), types(nullptr), wzs(nullptr), pzs(nullptr), history(nullptr){
     FILE * fp = fopen(path.c_str(), "r");
     if(fp){
@@ -17,12 +19,12 @@ Wicher::DB::DatabaseManager::DatabaseManager(std::string path) : path(path), roo
         root = json_loadf(fp, 0, &error);
         fclose(fp);
         if(!root){
-            Log::server(std::string("Error when parsing root:") + std::string(error.text));
-            Log::server(std::string("\tSource:") + std::string(error.source));
-            Log::server(std::string("\tLine:") + Toolkit::itostr(error.line));
-            Log::server(std::string("\tColumn:") + Toolkit::itostr(error.column));
-            Log::server(std::string("\tPosition [bytes]:") + Toolkit::itostr(error.position));
-            Log::server("Generating empty skeleton...");
+            spd::get("console")->error(std::string("Error when parsing root:") + std::string(error.text));
+            spd::get("console")->error(std::string("\tSource:") + std::string(error.source));
+            spd::get("console")->error(std::string("\tLine:") + Toolkit::itostr(error.line));
+            spd::get("console")->error(std::string("\tColumn:") + Toolkit::itostr(error.column));
+            spd::get("console")->error(std::string("\tPosition [bytes]:") + Toolkit::itostr(error.position));
+            spd::get("console")->error("Generating empty skeleton...");
             root = json_object();
             json_object_set_new(root, "items", json_array());
             json_object_set_new(root, "types", json_array());
@@ -31,7 +33,7 @@ Wicher::DB::DatabaseManager::DatabaseManager(std::string path) : path(path), roo
             json_object_set_new(root, "history", json_array());
         }
     }else{
-        Log::server("Generating empty skeleton...");
+        spd::get("console")->info("Generating empty skeleton...");
         root = json_object();
         json_object_set_new(root, "items", json_array());
         json_object_set_new(root, "types", json_array());
@@ -47,11 +49,11 @@ Wicher::DB::DatabaseManager::DatabaseManager(std::string path) : path(path), roo
 }
 
 Wicher::DB::DatabaseManager::~DatabaseManager(){
-    Log::info("Saving database...");
+    spd::get("console")->info("Saving database...");
     FILE * fp = fopen(path.c_str(), "w");
     if(json_dumpf(root, fp, JSON_COMPACT) == 0){
-        Log::info("OK.");
-    }else Log::info("Failed.");
+        spd::get("console")->info("OK.");
+    }else spd::get("console")->info("Failed.");
     fclose(fp);
     free(root);
 }

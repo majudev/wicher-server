@@ -9,6 +9,12 @@
 /* define if the Boost::Thread library is available */
 #undef HAVE_BOOST_THREAD
 
+/* define if the compiler supports basic C++11 syntax */
+#undef HAVE_CXX11
+
+/* Define to 1 if you have the `syslog' function. */
+#undef HAVE_SYSLOG
+
 /* Name of package */
 #undef PACKAGE
 
