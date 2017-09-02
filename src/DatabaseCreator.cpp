@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cstring>
 
-bool Wicher::DB::DatabaseManager::create_item(int id, std::string type, std::string comment, ErrorID * errorid){
+bool DatabaseManager::create_item(int id, std::string type, std::string comment, ErrorID * errorid){
     if(item_exists(id, type)){
         *errorid = ID_INVALID;
         return false;
@@ -20,7 +20,7 @@ bool Wicher::DB::DatabaseManager::create_item(int id, std::string type, std::str
     *errorid = NONE;
     return true;
 }
-bool Wicher::DB::DatabaseManager::create_type(std::string id, std::string name, std::string comment, ErrorID * errorid){
+bool DatabaseManager::create_type(std::string id, std::string name, std::string comment, ErrorID * errorid){
     if(type_exists(id)){
         *errorid = ID_INVALID;
         return false;
@@ -34,7 +34,7 @@ bool Wicher::DB::DatabaseManager::create_type(std::string id, std::string name, 
     *errorid = NONE;
     return true;
 }
-bool Wicher::DB::DatabaseManager::create_wz(int id, std::string date, std::string person, std::string comment, std::vector<int> item_ids, std::vector<std::string> item_types, ErrorID * errorid){
+bool DatabaseManager::create_wz(int id, std::string date, std::string person, std::string comment, std::vector<int> item_ids, std::vector<std::string> item_types, ErrorID * errorid){
     if(wz_exists(id)){
         *errorid = ID_INVALID;
         return false;
@@ -82,7 +82,7 @@ bool Wicher::DB::DatabaseManager::create_wz(int id, std::string date, std::strin
     *errorid = NONE;
     return true;
 }
-bool Wicher::DB::DatabaseManager::create_pz(int id, int wz_id, std::string date, std::string person, std::string comment, ErrorID * errorid){
+bool DatabaseManager::create_pz(int id, int wz_id, std::string date, std::string person, std::string comment, ErrorID * errorid){
     if(pz_exists(id)){
         *errorid = ID_INVALID;
         return false;
@@ -113,7 +113,7 @@ bool Wicher::DB::DatabaseManager::create_pz(int id, int wz_id, std::string date,
     *errorid = NONE;
     return true;
 }
-bool Wicher::DB::DatabaseManager::create_history(int id, std::string data, ErrorID * errorid){
+bool DatabaseManager::create_history(int id, std::string data, ErrorID * errorid){
     if(history_exists(id)){
         *errorid = ID_INVALID;
         return false;

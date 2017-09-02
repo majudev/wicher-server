@@ -88,7 +88,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = wicher_server$(EXEEXT)
+bin_PROGRAMS = wicher-server$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_boost_base.m4 \
@@ -105,10 +105,17 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_wicher_server_OBJECTS = wicher_server-ConnectionManager.$(OBJEXT) \
+am_wicher_server_OBJECTS = wicher_server-DBman.$(OBJEXT) \
+	wicher_server-DBmanPerformer.$(OBJEXT) \
 	wicher_server-MainOptions.$(OBJEXT) \
 	wicher_server-Config.$(OBJEXT) wicher_server-Toolkit.$(OBJEXT) \
-	wicher_server-_main.$(OBJEXT)
+	wicher_server-_main.$(OBJEXT) \
+	wicher_server-DatabaseCreator.$(OBJEXT) \
+	wicher_server-DatabaseDropper.$(OBJEXT) \
+	wicher_server-DatabaseGetter.$(OBJEXT) \
+	wicher_server-DatabaseHelper.$(OBJEXT) \
+	wicher_server-DatabaseManager.$(OBJEXT) \
+	wicher_server-DatabaseUpdater.$(OBJEXT)
 wicher_server_OBJECTS = $(am_wicher_server_OBJECTS)
 am__DEPENDENCIES_1 =
 wicher_server_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -281,18 +288,19 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CXXFLAGS = -I$(top_srcdir)/include -std=gnu++11
-wicher_server_SOURCES = ConnectionManager.cpp \
+wicher_server_SOURCES = DBman.cpp \
+	DBmanPerformer.cpp \
 	MainOptions.cpp \
 	Config.cpp \
 	Toolkit.cpp \
-	_main.cpp
+	_main.cpp \
+	DatabaseCreator.cpp \
+	DatabaseDropper.cpp \
+	DatabaseGetter.cpp \
+	DatabaseHelper.cpp \
+	DatabaseManager.cpp \
+	DatabaseUpdater.cpp
 
-#	DatabaseCreator.cpp \
-#	DatabaseDropper.cpp \
-#	DatabaseGetter.cpp \
-#	DatabaseHelper.cpp \
-#	DatabaseManager.cpp \
-#	DatabaseUpdater.cpp \
 #	Log.cpp \
 #	_main.cpp \
 #	Main.cpp \
@@ -377,8 +385,8 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
-wicher_server$(EXEEXT): $(wicher_server_OBJECTS) $(wicher_server_DEPENDENCIES) $(EXTRA_wicher_server_DEPENDENCIES) 
-	@rm -f wicher_server$(EXEEXT)
+wicher-server$(EXEEXT): $(wicher_server_OBJECTS) $(wicher_server_DEPENDENCIES) $(EXTRA_wicher_server_DEPENDENCIES) 
+	@rm -f wicher-server$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(wicher_server_OBJECTS) $(wicher_server_LDADD) $(LIBS)
 
 mostlyclean-compile:
@@ -388,7 +396,14 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-Config.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-ConnectionManager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DBman.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DBmanPerformer.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseCreator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseDropper.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseGetter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseHelper.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseManager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseUpdater.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-MainOptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-Toolkit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-_main.Po@am__quote@
@@ -409,19 +424,33 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-wicher_server-ConnectionManager.o: ConnectionManager.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-ConnectionManager.o -MD -MP -MF $(DEPDIR)/wicher_server-ConnectionManager.Tpo -c -o wicher_server-ConnectionManager.o `test -f 'ConnectionManager.cpp' || echo '$(srcdir)/'`ConnectionManager.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-ConnectionManager.Tpo $(DEPDIR)/wicher_server-ConnectionManager.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ConnectionManager.cpp' object='wicher_server-ConnectionManager.o' libtool=no @AMDEPBACKSLASH@
+wicher_server-DBman.o: DBman.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DBman.o -MD -MP -MF $(DEPDIR)/wicher_server-DBman.Tpo -c -o wicher_server-DBman.o `test -f 'DBman.cpp' || echo '$(srcdir)/'`DBman.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DBman.Tpo $(DEPDIR)/wicher_server-DBman.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DBman.cpp' object='wicher_server-DBman.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-ConnectionManager.o `test -f 'ConnectionManager.cpp' || echo '$(srcdir)/'`ConnectionManager.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DBman.o `test -f 'DBman.cpp' || echo '$(srcdir)/'`DBman.cpp
 
-wicher_server-ConnectionManager.obj: ConnectionManager.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-ConnectionManager.obj -MD -MP -MF $(DEPDIR)/wicher_server-ConnectionManager.Tpo -c -o wicher_server-ConnectionManager.obj `if test -f 'ConnectionManager.cpp'; then $(CYGPATH_W) 'ConnectionManager.cpp'; else $(CYGPATH_W) '$(srcdir)/ConnectionManager.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-ConnectionManager.Tpo $(DEPDIR)/wicher_server-ConnectionManager.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ConnectionManager.cpp' object='wicher_server-ConnectionManager.obj' libtool=no @AMDEPBACKSLASH@
+wicher_server-DBman.obj: DBman.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DBman.obj -MD -MP -MF $(DEPDIR)/wicher_server-DBman.Tpo -c -o wicher_server-DBman.obj `if test -f 'DBman.cpp'; then $(CYGPATH_W) 'DBman.cpp'; else $(CYGPATH_W) '$(srcdir)/DBman.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DBman.Tpo $(DEPDIR)/wicher_server-DBman.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DBman.cpp' object='wicher_server-DBman.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-ConnectionManager.obj `if test -f 'ConnectionManager.cpp'; then $(CYGPATH_W) 'ConnectionManager.cpp'; else $(CYGPATH_W) '$(srcdir)/ConnectionManager.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DBman.obj `if test -f 'DBman.cpp'; then $(CYGPATH_W) 'DBman.cpp'; else $(CYGPATH_W) '$(srcdir)/DBman.cpp'; fi`
+
+wicher_server-DBmanPerformer.o: DBmanPerformer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DBmanPerformer.o -MD -MP -MF $(DEPDIR)/wicher_server-DBmanPerformer.Tpo -c -o wicher_server-DBmanPerformer.o `test -f 'DBmanPerformer.cpp' || echo '$(srcdir)/'`DBmanPerformer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DBmanPerformer.Tpo $(DEPDIR)/wicher_server-DBmanPerformer.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DBmanPerformer.cpp' object='wicher_server-DBmanPerformer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DBmanPerformer.o `test -f 'DBmanPerformer.cpp' || echo '$(srcdir)/'`DBmanPerformer.cpp
+
+wicher_server-DBmanPerformer.obj: DBmanPerformer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DBmanPerformer.obj -MD -MP -MF $(DEPDIR)/wicher_server-DBmanPerformer.Tpo -c -o wicher_server-DBmanPerformer.obj `if test -f 'DBmanPerformer.cpp'; then $(CYGPATH_W) 'DBmanPerformer.cpp'; else $(CYGPATH_W) '$(srcdir)/DBmanPerformer.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DBmanPerformer.Tpo $(DEPDIR)/wicher_server-DBmanPerformer.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DBmanPerformer.cpp' object='wicher_server-DBmanPerformer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DBmanPerformer.obj `if test -f 'DBmanPerformer.cpp'; then $(CYGPATH_W) 'DBmanPerformer.cpp'; else $(CYGPATH_W) '$(srcdir)/DBmanPerformer.cpp'; fi`
 
 wicher_server-MainOptions.o: MainOptions.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-MainOptions.o -MD -MP -MF $(DEPDIR)/wicher_server-MainOptions.Tpo -c -o wicher_server-MainOptions.o `test -f 'MainOptions.cpp' || echo '$(srcdir)/'`MainOptions.cpp
@@ -478,6 +507,90 @@ wicher_server-_main.obj: _main.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='_main.cpp' object='wicher_server-_main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-_main.obj `if test -f '_main.cpp'; then $(CYGPATH_W) '_main.cpp'; else $(CYGPATH_W) '$(srcdir)/_main.cpp'; fi`
+
+wicher_server-DatabaseCreator.o: DatabaseCreator.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseCreator.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseCreator.Tpo -c -o wicher_server-DatabaseCreator.o `test -f 'DatabaseCreator.cpp' || echo '$(srcdir)/'`DatabaseCreator.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseCreator.Tpo $(DEPDIR)/wicher_server-DatabaseCreator.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseCreator.cpp' object='wicher_server-DatabaseCreator.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseCreator.o `test -f 'DatabaseCreator.cpp' || echo '$(srcdir)/'`DatabaseCreator.cpp
+
+wicher_server-DatabaseCreator.obj: DatabaseCreator.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseCreator.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseCreator.Tpo -c -o wicher_server-DatabaseCreator.obj `if test -f 'DatabaseCreator.cpp'; then $(CYGPATH_W) 'DatabaseCreator.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseCreator.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseCreator.Tpo $(DEPDIR)/wicher_server-DatabaseCreator.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseCreator.cpp' object='wicher_server-DatabaseCreator.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseCreator.obj `if test -f 'DatabaseCreator.cpp'; then $(CYGPATH_W) 'DatabaseCreator.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseCreator.cpp'; fi`
+
+wicher_server-DatabaseDropper.o: DatabaseDropper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseDropper.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseDropper.Tpo -c -o wicher_server-DatabaseDropper.o `test -f 'DatabaseDropper.cpp' || echo '$(srcdir)/'`DatabaseDropper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseDropper.Tpo $(DEPDIR)/wicher_server-DatabaseDropper.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseDropper.cpp' object='wicher_server-DatabaseDropper.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseDropper.o `test -f 'DatabaseDropper.cpp' || echo '$(srcdir)/'`DatabaseDropper.cpp
+
+wicher_server-DatabaseDropper.obj: DatabaseDropper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseDropper.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseDropper.Tpo -c -o wicher_server-DatabaseDropper.obj `if test -f 'DatabaseDropper.cpp'; then $(CYGPATH_W) 'DatabaseDropper.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseDropper.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseDropper.Tpo $(DEPDIR)/wicher_server-DatabaseDropper.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseDropper.cpp' object='wicher_server-DatabaseDropper.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseDropper.obj `if test -f 'DatabaseDropper.cpp'; then $(CYGPATH_W) 'DatabaseDropper.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseDropper.cpp'; fi`
+
+wicher_server-DatabaseGetter.o: DatabaseGetter.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseGetter.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseGetter.Tpo -c -o wicher_server-DatabaseGetter.o `test -f 'DatabaseGetter.cpp' || echo '$(srcdir)/'`DatabaseGetter.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseGetter.Tpo $(DEPDIR)/wicher_server-DatabaseGetter.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseGetter.cpp' object='wicher_server-DatabaseGetter.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseGetter.o `test -f 'DatabaseGetter.cpp' || echo '$(srcdir)/'`DatabaseGetter.cpp
+
+wicher_server-DatabaseGetter.obj: DatabaseGetter.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseGetter.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseGetter.Tpo -c -o wicher_server-DatabaseGetter.obj `if test -f 'DatabaseGetter.cpp'; then $(CYGPATH_W) 'DatabaseGetter.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseGetter.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseGetter.Tpo $(DEPDIR)/wicher_server-DatabaseGetter.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseGetter.cpp' object='wicher_server-DatabaseGetter.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseGetter.obj `if test -f 'DatabaseGetter.cpp'; then $(CYGPATH_W) 'DatabaseGetter.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseGetter.cpp'; fi`
+
+wicher_server-DatabaseHelper.o: DatabaseHelper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseHelper.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseHelper.Tpo -c -o wicher_server-DatabaseHelper.o `test -f 'DatabaseHelper.cpp' || echo '$(srcdir)/'`DatabaseHelper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseHelper.Tpo $(DEPDIR)/wicher_server-DatabaseHelper.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseHelper.cpp' object='wicher_server-DatabaseHelper.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseHelper.o `test -f 'DatabaseHelper.cpp' || echo '$(srcdir)/'`DatabaseHelper.cpp
+
+wicher_server-DatabaseHelper.obj: DatabaseHelper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseHelper.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseHelper.Tpo -c -o wicher_server-DatabaseHelper.obj `if test -f 'DatabaseHelper.cpp'; then $(CYGPATH_W) 'DatabaseHelper.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseHelper.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseHelper.Tpo $(DEPDIR)/wicher_server-DatabaseHelper.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseHelper.cpp' object='wicher_server-DatabaseHelper.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseHelper.obj `if test -f 'DatabaseHelper.cpp'; then $(CYGPATH_W) 'DatabaseHelper.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseHelper.cpp'; fi`
+
+wicher_server-DatabaseManager.o: DatabaseManager.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseManager.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseManager.Tpo -c -o wicher_server-DatabaseManager.o `test -f 'DatabaseManager.cpp' || echo '$(srcdir)/'`DatabaseManager.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseManager.Tpo $(DEPDIR)/wicher_server-DatabaseManager.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseManager.cpp' object='wicher_server-DatabaseManager.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseManager.o `test -f 'DatabaseManager.cpp' || echo '$(srcdir)/'`DatabaseManager.cpp
+
+wicher_server-DatabaseManager.obj: DatabaseManager.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseManager.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseManager.Tpo -c -o wicher_server-DatabaseManager.obj `if test -f 'DatabaseManager.cpp'; then $(CYGPATH_W) 'DatabaseManager.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseManager.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseManager.Tpo $(DEPDIR)/wicher_server-DatabaseManager.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseManager.cpp' object='wicher_server-DatabaseManager.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseManager.obj `if test -f 'DatabaseManager.cpp'; then $(CYGPATH_W) 'DatabaseManager.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseManager.cpp'; fi`
+
+wicher_server-DatabaseUpdater.o: DatabaseUpdater.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseUpdater.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseUpdater.Tpo -c -o wicher_server-DatabaseUpdater.o `test -f 'DatabaseUpdater.cpp' || echo '$(srcdir)/'`DatabaseUpdater.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseUpdater.Tpo $(DEPDIR)/wicher_server-DatabaseUpdater.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseUpdater.cpp' object='wicher_server-DatabaseUpdater.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseUpdater.o `test -f 'DatabaseUpdater.cpp' || echo '$(srcdir)/'`DatabaseUpdater.cpp
+
+wicher_server-DatabaseUpdater.obj: DatabaseUpdater.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseUpdater.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseUpdater.Tpo -c -o wicher_server-DatabaseUpdater.obj `if test -f 'DatabaseUpdater.cpp'; then $(CYGPATH_W) 'DatabaseUpdater.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseUpdater.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseUpdater.Tpo $(DEPDIR)/wicher_server-DatabaseUpdater.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseUpdater.cpp' object='wicher_server-DatabaseUpdater.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseUpdater.obj `if test -f 'DatabaseUpdater.cpp'; then $(CYGPATH_W) 'DatabaseUpdater.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseUpdater.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique

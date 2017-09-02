@@ -12,7 +12,7 @@
 
 namespace spd = spdlog;
 
-Wicher::DB::DatabaseManager::DatabaseManager(std::string path) : path(path), root(nullptr), items(nullptr), types(nullptr), wzs(nullptr), pzs(nullptr), history(nullptr){
+DatabaseManager::DatabaseManager(std::string path) : path(path), root(nullptr), items(nullptr), types(nullptr), wzs(nullptr), pzs(nullptr), history(nullptr){
     FILE * fp = fopen(path.c_str(), "r");
     if(fp){
         json_error_t error;
@@ -48,7 +48,7 @@ Wicher::DB::DatabaseManager::DatabaseManager(std::string path) : path(path), roo
     history = json_object_get(root, "history");
 }
 
-Wicher::DB::DatabaseManager::~DatabaseManager(){
+DatabaseManager::~DatabaseManager(){
     spd::get("console")->info("Saving database...");
     FILE * fp = fopen(path.c_str(), "w");
     if(json_dumpf(root, fp, JSON_COMPACT) == 0){

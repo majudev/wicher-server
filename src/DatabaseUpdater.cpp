@@ -1,6 +1,6 @@
 #include "DatabaseManager.h"
 
-bool Wicher::DB::DatabaseManager::update_item(int id, std::string type, /*bool update_id, int new_id, */bool update_wz, int wz_id, bool update_comment, std::string comment, ErrorID * errorid){
+bool DatabaseManager::update_item(int id, std::string type, /*bool update_id, int new_id, */bool update_wz, int wz_id, bool update_comment, std::string comment, ErrorID * errorid){
     if(!item_exists(id, type)){
         *errorid = ID_INVALID;
         return false;
@@ -34,7 +34,7 @@ bool Wicher::DB::DatabaseManager::update_item(int id, std::string type, /*bool u
     return false;
 }
 
-bool Wicher::DB::DatabaseManager::update_type(std::string id, bool update_name, std::string new_name, bool update_comment, std::string new_comment, ErrorID *errorid){
+bool DatabaseManager::update_type(std::string id, bool update_name, std::string new_name, bool update_comment, std::string new_comment, ErrorID *errorid){
     if(!type_exists(id)){
         *errorid = ID_INVALID;
         return false;
@@ -55,7 +55,7 @@ bool Wicher::DB::DatabaseManager::update_type(std::string id, bool update_name, 
     return false;
 }
 
-bool Wicher::DB::DatabaseManager::update_wz(int id, bool update_date, std::string new_date, bool update_person, std::string new_person, bool update_comment, std::string new_comment, ErrorID *errorid){
+bool DatabaseManager::update_wz(int id, bool update_date, std::string new_date, bool update_person, std::string new_person, bool update_comment, std::string new_comment, ErrorID *errorid){
     if(!wz_exists(id)){
         *errorid = ID_INVALID;
         return false;
@@ -78,7 +78,7 @@ bool Wicher::DB::DatabaseManager::update_wz(int id, bool update_date, std::strin
     return false;
 }
 
-bool Wicher::DB::DatabaseManager::update_pz(int id, bool update_date, std::string new_date, bool update_person, std::string new_person, bool update_comment, std::string new_comment, ErrorID *errorid){
+bool DatabaseManager::update_pz(int id, bool update_date, std::string new_date, bool update_person, std::string new_person, bool update_comment, std::string new_comment, ErrorID *errorid){
     if(!pz_exists(id)){
         *errorid = ID_INVALID;
         return false;
@@ -101,7 +101,7 @@ bool Wicher::DB::DatabaseManager::update_pz(int id, bool update_date, std::strin
     return false;
 }
 
-bool Wicher::DB::DatabaseManager::update_history(int id, bool update_data, std::string data, ErrorID * errorid){
+bool DatabaseManager::update_history(int id, bool update_data, std::string data, ErrorID * errorid){
     if(!history_exists(id)){
         *errorid = ID_INVALID;
         return false;

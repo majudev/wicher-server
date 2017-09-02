@@ -1,6 +1,6 @@
 #include "DatabaseManager.h"
 
-int Wicher::DB::DatabaseManager::get_next_item_id(std::string type, ErrorID *errorid){
+int DatabaseManager::get_next_item_id(std::string type, ErrorID *errorid){
     if(!items){
         *errorid = ARRAY_IS_NULL;
         return -1;
@@ -25,7 +25,7 @@ int Wicher::DB::DatabaseManager::get_next_item_id(std::string type, ErrorID *err
     }
     return id + 1;
 }
-int Wicher::DB::DatabaseManager::get_next_wz_id(ErrorID *errorid){
+int DatabaseManager::get_next_wz_id(ErrorID *errorid){
     if(!wzs){
         *errorid = ARRAY_IS_NULL;
         return -1;
@@ -47,7 +47,7 @@ int Wicher::DB::DatabaseManager::get_next_wz_id(ErrorID *errorid){
     }
     return id + 1;
 }
-int Wicher::DB::DatabaseManager::get_next_pz_id(ErrorID *errorid){
+int DatabaseManager::get_next_pz_id(ErrorID *errorid){
     if(!pzs){
         *errorid = ARRAY_IS_NULL;
         return -1;
@@ -69,7 +69,7 @@ int Wicher::DB::DatabaseManager::get_next_pz_id(ErrorID *errorid){
     }
     return id + 1;
 }
-int Wicher::DB::DatabaseManager::get_next_history_id(ErrorID *errorid){
+int DatabaseManager::get_next_history_id(ErrorID *errorid){
     if(!history){
         *errorid = ARRAY_IS_NULL;
         return -1;
@@ -92,25 +92,25 @@ int Wicher::DB::DatabaseManager::get_next_history_id(ErrorID *errorid){
     return id + 1;
 }
 
-bool Wicher::DB::DatabaseManager::item_exists(int id, std::string type){
+bool DatabaseManager::item_exists(int id, std::string type){
     ErrorID eid;
     json_t * json = get_item_json(id, type, &eid);
     return json != nullptr;
 }
 
-bool Wicher::DB::DatabaseManager::type_exists(std::string id){
+bool DatabaseManager::type_exists(std::string id){
     ErrorID eid;
     json_t * json = get_type_json(id, &eid);
     return json != nullptr;
 }
 
-bool Wicher::DB::DatabaseManager::wz_exists(int id){
+bool DatabaseManager::wz_exists(int id){
     ErrorID eid;
     json_t * json = get_wz_json(id, &eid);
     return json != nullptr;
 }
 
-bool Wicher::DB::DatabaseManager::wz_free(int wz_id){
+bool DatabaseManager::wz_free(int wz_id){
     if(!pzs){
         return false;
     }
@@ -129,19 +129,19 @@ bool Wicher::DB::DatabaseManager::wz_free(int wz_id){
     return true;
 }
 
-bool Wicher::DB::DatabaseManager::pz_exists(int id){
+bool DatabaseManager::pz_exists(int id){
     ErrorID eid;
     json_t * json = get_pz_json(id, &eid);
     return json != nullptr;
 }
 
-bool Wicher::DB::DatabaseManager::history_exists(int id){
+bool DatabaseManager::history_exists(int id){
     ErrorID eid;
     json_t * json = get_history_json(id, &eid);
     return json != nullptr;
 }
 
-json_t * Wicher::DB::DatabaseManager::get_item_json(int id, std::string type, ErrorID * errorid){
+json_t * DatabaseManager::get_item_json(int id, std::string type, ErrorID * errorid){
     if(!items){
         *errorid = ARRAY_IS_NULL;
         return nullptr;
@@ -165,7 +165,7 @@ json_t * Wicher::DB::DatabaseManager::get_item_json(int id, std::string type, Er
     return nullptr;
 }
 
-json_t * Wicher::DB::DatabaseManager::get_type_json(std::string id, ErrorID * errorid){
+json_t * DatabaseManager::get_type_json(std::string id, ErrorID * errorid){
     if(!types){
         *errorid = ARRAY_IS_NULL;
         return nullptr;
@@ -188,7 +188,7 @@ json_t * Wicher::DB::DatabaseManager::get_type_json(std::string id, ErrorID * er
     return nullptr;
 }
 
-json_t * Wicher::DB::DatabaseManager::get_wz_json(int id, ErrorID * errorid){
+json_t * DatabaseManager::get_wz_json(int id, ErrorID * errorid){
     if(!wzs){
         *errorid = ARRAY_IS_NULL;
         return nullptr;
@@ -211,7 +211,7 @@ json_t * Wicher::DB::DatabaseManager::get_wz_json(int id, ErrorID * errorid){
     return nullptr;
 }
 
-json_t * Wicher::DB::DatabaseManager::get_pz_json(int id, ErrorID * errorid){
+json_t * DatabaseManager::get_pz_json(int id, ErrorID * errorid){
     if(!pzs){
         *errorid = ARRAY_IS_NULL;
         return nullptr;
@@ -234,7 +234,7 @@ json_t * Wicher::DB::DatabaseManager::get_pz_json(int id, ErrorID * errorid){
     return nullptr;
 }
 
-json_t * Wicher::DB::DatabaseManager::get_history_json(int id, ErrorID * errorid){
+json_t * DatabaseManager::get_history_json(int id, ErrorID * errorid){
     if(!history){
         *errorid = ARRAY_IS_NULL;
         return nullptr;

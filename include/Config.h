@@ -7,8 +7,9 @@
 class Config{
 	public:
     	static Config * getSingleton();
-		bool noadmin;
-	
+        bool noadmin;
+        int port;
+
 	private:
     	Config();
     	Config( const Config & );
