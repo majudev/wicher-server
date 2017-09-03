@@ -1,6 +1,6 @@
-#include "DatabaseManager.h"
+#include "JSONDatabase.h"
 
-std::string DatabaseManager::error(ErrorID errorid){
+std::string JSONDatabase::error(ErrorID errorid){
     json_t * msg_root = json_object();
     json_object_set_new(msg_root, "response", json_string("error"));
     json_object_set_new(msg_root, "errorid", json_integer(errorid));
@@ -11,7 +11,7 @@ std::string DatabaseManager::error(ErrorID errorid){
     return tr;
 }
 
-std::string DatabaseManager::get_items(std::string type){
+std::string JSONDatabase::get_items(std::string type){
     if(!items){
         return error(ARRAY_IS_NULL);
     }
@@ -57,7 +57,7 @@ std::string DatabaseManager::get_items(std::string type){
     free(msg_root);
     return tr;
 }
-std::string DatabaseManager::get_types(){
+std::string JSONDatabase::get_types(){
     if(!types || !items){
         return error(ARRAY_IS_NULL);
     }
@@ -109,7 +109,7 @@ std::string DatabaseManager::get_types(){
     free(msg_root);
     return tr;
 }
-std::string DatabaseManager::get_wzs(){
+std::string JSONDatabase::get_wzs(){
     if(!wzs || !pzs){
         return error(ARRAY_IS_NULL);
     }
@@ -166,7 +166,7 @@ std::string DatabaseManager::get_wzs(){
     free(msg_root);
     return tr;
 }
-std::string DatabaseManager::get_pzs(){
+std::string JSONDatabase::get_pzs(){
     if(!pzs){
         return error(ARRAY_IS_NULL);
     }
@@ -208,7 +208,7 @@ std::string DatabaseManager::get_pzs(){
     free(msg_root);
     return tr;
 }
-std::string DatabaseManager::get_history(){
+std::string JSONDatabase::get_history(){
     if(!history){
         return error(ARRAY_IS_NULL);
     }
@@ -245,7 +245,7 @@ std::string DatabaseManager::get_history(){
     return tr;
 }
 
-std::string DatabaseManager::get_wz_items(int id){
+std::string JSONDatabase::get_wz_items(int id){
     if(!wzs){
         return error(ARRAY_IS_NULL);
     }

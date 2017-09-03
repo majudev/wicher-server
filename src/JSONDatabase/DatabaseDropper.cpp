@@ -1,6 +1,6 @@
-#include "DatabaseManager.h"
+#include "JSONDatabase.h"
 
-bool DatabaseManager::drop_item(int id, std::string type, ErrorID * errorid){
+bool JSONDatabase::drop_item(int id, std::string type, ErrorID * errorid){
     if(!items){
         *errorid = ARRAY_IS_NULL;
         return false;
@@ -25,7 +25,7 @@ bool DatabaseManager::drop_item(int id, std::string type, ErrorID * errorid){
     return false;
 }
 
-bool DatabaseManager::drop_type(std::string id, ErrorID * errorid){
+bool JSONDatabase::drop_type(std::string id, ErrorID * errorid){
     if(!types || !items){
         *errorid = ARRAY_IS_NULL;
         return false;
@@ -61,7 +61,7 @@ bool DatabaseManager::drop_type(std::string id, ErrorID * errorid){
     return false;
 }
 
-bool DatabaseManager::drop_wz(int id, ErrorID * errorid){
+bool JSONDatabase::drop_wz(int id, ErrorID * errorid){
     if(!wzs || !items){
         *errorid = ARRAY_IS_NULL;
         return false;
@@ -94,7 +94,7 @@ bool DatabaseManager::drop_wz(int id, ErrorID * errorid){
     return false;
 }
 
-bool DatabaseManager::drop_pz(int id, ErrorID * errorid){
+bool JSONDatabase::drop_pz(int id, ErrorID * errorid){
     if(!pzs){
         *errorid = ARRAY_IS_NULL;
         return false;
@@ -124,7 +124,7 @@ bool DatabaseManager::drop_pz(int id, ErrorID * errorid){
     return false;
 }
 
-bool DatabaseManager::drop_history(int id, ErrorID * errorid){
+bool JSONDatabase::drop_history(int id, ErrorID * errorid){
     if(!history){
         *errorid = ARRAY_IS_NULL;
         return false;

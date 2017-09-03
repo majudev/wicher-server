@@ -1,4 +1,4 @@
-#include "DatabaseManager.h"
+#include "JSONDatabase.h"
 
 /**
 *                    FILE STRUCTURE:
@@ -12,7 +12,7 @@
 
 namespace spd = spdlog;
 
-DatabaseManager::DatabaseManager(std::string path) : path(path), root(nullptr), items(nullptr), types(nullptr), wzs(nullptr), pzs(nullptr), history(nullptr){
+JSONDatabase::JSONDatabase(std::string path) : path(path), root(nullptr), items(nullptr), types(nullptr), wzs(nullptr), pzs(nullptr), history(nullptr){
     FILE * fp = fopen(path.c_str(), "r");
     if(fp){
         json_error_t error;
@@ -48,7 +48,7 @@ DatabaseManager::DatabaseManager(std::string path) : path(path), root(nullptr), 
     history = json_object_get(root, "history");
 }
 
-DatabaseManager::~DatabaseManager(){
+JSONDatabase::~JSONDatabase(){
     spd::get("console")->info("Saving database...");
     FILE * fp = fopen(path.c_str(), "w");
     if(json_dumpf(root, fp, JSON_COMPACT) == 0){

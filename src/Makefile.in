@@ -105,17 +105,19 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
+am__dirstamp = $(am__leading_dot)dirstamp
 am_wicher_server_OBJECTS = wicher_server-DBman.$(OBJEXT) \
 	wicher_server-DBmanPerformer.$(OBJEXT) \
+	wicher_server-AuthDB.$(OBJEXT) \
 	wicher_server-MainOptions.$(OBJEXT) \
 	wicher_server-Config.$(OBJEXT) wicher_server-Toolkit.$(OBJEXT) \
 	wicher_server-_main.$(OBJEXT) \
-	wicher_server-DatabaseCreator.$(OBJEXT) \
-	wicher_server-DatabaseDropper.$(OBJEXT) \
-	wicher_server-DatabaseGetter.$(OBJEXT) \
-	wicher_server-DatabaseHelper.$(OBJEXT) \
-	wicher_server-DatabaseManager.$(OBJEXT) \
-	wicher_server-DatabaseUpdater.$(OBJEXT)
+	JSONDatabase/wicher_server-DatabaseCreator.$(OBJEXT) \
+	JSONDatabase/wicher_server-DatabaseDropper.$(OBJEXT) \
+	JSONDatabase/wicher_server-DatabaseGetter.$(OBJEXT) \
+	JSONDatabase/wicher_server-DatabaseHelper.$(OBJEXT) \
+	JSONDatabase/wicher_server-DatabaseManager.$(OBJEXT) \
+	JSONDatabase/wicher_server-DatabaseUpdater.$(OBJEXT)
 wicher_server_OBJECTS = $(am_wicher_server_OBJECTS)
 am__DEPENDENCIES_1 =
 wicher_server_DEPENDENCIES = $(am__DEPENDENCIES_1)
@@ -290,16 +292,17 @@ top_srcdir = @top_srcdir@
 AM_CXXFLAGS = -I$(top_srcdir)/include -std=gnu++11
 wicher_server_SOURCES = DBman.cpp \
 	DBmanPerformer.cpp \
+	AuthDB.cpp \
 	MainOptions.cpp \
 	Config.cpp \
 	Toolkit.cpp \
 	_main.cpp \
-	DatabaseCreator.cpp \
-	DatabaseDropper.cpp \
-	DatabaseGetter.cpp \
-	DatabaseHelper.cpp \
-	DatabaseManager.cpp \
-	DatabaseUpdater.cpp
+	JSONDatabase/DatabaseCreator.cpp \
+	JSONDatabase/DatabaseDropper.cpp \
+	JSONDatabase/DatabaseGetter.cpp \
+	JSONDatabase/DatabaseHelper.cpp \
+	JSONDatabase/DatabaseManager.cpp \
+	JSONDatabase/DatabaseUpdater.cpp
 
 #	Log.cpp \
 #	_main.cpp \
@@ -384,6 +387,30 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+JSONDatabase/$(am__dirstamp):
+	@$(MKDIR_P) JSONDatabase
+	@: > JSONDatabase/$(am__dirstamp)
+JSONDatabase/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) JSONDatabase/$(DEPDIR)
+	@: > JSONDatabase/$(DEPDIR)/$(am__dirstamp)
+JSONDatabase/wicher_server-DatabaseCreator.$(OBJEXT):  \
+	JSONDatabase/$(am__dirstamp) \
+	JSONDatabase/$(DEPDIR)/$(am__dirstamp)
+JSONDatabase/wicher_server-DatabaseDropper.$(OBJEXT):  \
+	JSONDatabase/$(am__dirstamp) \
+	JSONDatabase/$(DEPDIR)/$(am__dirstamp)
+JSONDatabase/wicher_server-DatabaseGetter.$(OBJEXT):  \
+	JSONDatabase/$(am__dirstamp) \
+	JSONDatabase/$(DEPDIR)/$(am__dirstamp)
+JSONDatabase/wicher_server-DatabaseHelper.$(OBJEXT):  \
+	JSONDatabase/$(am__dirstamp) \
+	JSONDatabase/$(DEPDIR)/$(am__dirstamp)
+JSONDatabase/wicher_server-DatabaseManager.$(OBJEXT):  \
+	JSONDatabase/$(am__dirstamp) \
+	JSONDatabase/$(DEPDIR)/$(am__dirstamp)
+JSONDatabase/wicher_server-DatabaseUpdater.$(OBJEXT):  \
+	JSONDatabase/$(am__dirstamp) \
+	JSONDatabase/$(DEPDIR)/$(am__dirstamp)
 
 wicher-server$(EXEEXT): $(wicher_server_OBJECTS) $(wicher_server_DEPENDENCIES) $(EXTRA_wicher_server_DEPENDENCIES) 
 	@rm -f wicher-server$(EXEEXT)
@@ -391,22 +418,24 @@ wicher-server$(EXEEXT): $(wicher_server_OBJECTS) $(wicher_server_DEPENDENCIES) $
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f JSONDatabase/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-AuthDB.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-Config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DBman.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DBmanPerformer.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseCreator.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseDropper.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseGetter.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseHelper.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseManager.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-DatabaseUpdater.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-MainOptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-Toolkit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-_main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseCreator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseDropper.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseGetter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseHelper.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseManager.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseUpdater.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -451,6 +480,20 @@ wicher_server-DBmanPerformer.obj: DBmanPerformer.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DBmanPerformer.cpp' object='wicher_server-DBmanPerformer.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DBmanPerformer.obj `if test -f 'DBmanPerformer.cpp'; then $(CYGPATH_W) 'DBmanPerformer.cpp'; else $(CYGPATH_W) '$(srcdir)/DBmanPerformer.cpp'; fi`
+
+wicher_server-AuthDB.o: AuthDB.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-AuthDB.o -MD -MP -MF $(DEPDIR)/wicher_server-AuthDB.Tpo -c -o wicher_server-AuthDB.o `test -f 'AuthDB.cpp' || echo '$(srcdir)/'`AuthDB.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-AuthDB.Tpo $(DEPDIR)/wicher_server-AuthDB.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='AuthDB.cpp' object='wicher_server-AuthDB.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-AuthDB.o `test -f 'AuthDB.cpp' || echo '$(srcdir)/'`AuthDB.cpp
+
+wicher_server-AuthDB.obj: AuthDB.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-AuthDB.obj -MD -MP -MF $(DEPDIR)/wicher_server-AuthDB.Tpo -c -o wicher_server-AuthDB.obj `if test -f 'AuthDB.cpp'; then $(CYGPATH_W) 'AuthDB.cpp'; else $(CYGPATH_W) '$(srcdir)/AuthDB.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-AuthDB.Tpo $(DEPDIR)/wicher_server-AuthDB.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='AuthDB.cpp' object='wicher_server-AuthDB.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-AuthDB.obj `if test -f 'AuthDB.cpp'; then $(CYGPATH_W) 'AuthDB.cpp'; else $(CYGPATH_W) '$(srcdir)/AuthDB.cpp'; fi`
 
 wicher_server-MainOptions.o: MainOptions.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-MainOptions.o -MD -MP -MF $(DEPDIR)/wicher_server-MainOptions.Tpo -c -o wicher_server-MainOptions.o `test -f 'MainOptions.cpp' || echo '$(srcdir)/'`MainOptions.cpp
@@ -508,89 +551,89 @@ wicher_server-_main.obj: _main.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-_main.obj `if test -f '_main.cpp'; then $(CYGPATH_W) '_main.cpp'; else $(CYGPATH_W) '$(srcdir)/_main.cpp'; fi`
 
-wicher_server-DatabaseCreator.o: DatabaseCreator.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseCreator.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseCreator.Tpo -c -o wicher_server-DatabaseCreator.o `test -f 'DatabaseCreator.cpp' || echo '$(srcdir)/'`DatabaseCreator.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseCreator.Tpo $(DEPDIR)/wicher_server-DatabaseCreator.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseCreator.cpp' object='wicher_server-DatabaseCreator.o' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseCreator.o: JSONDatabase/DatabaseCreator.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseCreator.o -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseCreator.Tpo -c -o JSONDatabase/wicher_server-DatabaseCreator.o `test -f 'JSONDatabase/DatabaseCreator.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseCreator.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseCreator.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseCreator.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseCreator.cpp' object='JSONDatabase/wicher_server-DatabaseCreator.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseCreator.o `test -f 'DatabaseCreator.cpp' || echo '$(srcdir)/'`DatabaseCreator.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseCreator.o `test -f 'JSONDatabase/DatabaseCreator.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseCreator.cpp
 
-wicher_server-DatabaseCreator.obj: DatabaseCreator.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseCreator.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseCreator.Tpo -c -o wicher_server-DatabaseCreator.obj `if test -f 'DatabaseCreator.cpp'; then $(CYGPATH_W) 'DatabaseCreator.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseCreator.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseCreator.Tpo $(DEPDIR)/wicher_server-DatabaseCreator.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseCreator.cpp' object='wicher_server-DatabaseCreator.obj' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseCreator.obj: JSONDatabase/DatabaseCreator.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseCreator.obj -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseCreator.Tpo -c -o JSONDatabase/wicher_server-DatabaseCreator.obj `if test -f 'JSONDatabase/DatabaseCreator.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseCreator.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseCreator.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseCreator.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseCreator.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseCreator.cpp' object='JSONDatabase/wicher_server-DatabaseCreator.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseCreator.obj `if test -f 'DatabaseCreator.cpp'; then $(CYGPATH_W) 'DatabaseCreator.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseCreator.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseCreator.obj `if test -f 'JSONDatabase/DatabaseCreator.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseCreator.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseCreator.cpp'; fi`
 
-wicher_server-DatabaseDropper.o: DatabaseDropper.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseDropper.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseDropper.Tpo -c -o wicher_server-DatabaseDropper.o `test -f 'DatabaseDropper.cpp' || echo '$(srcdir)/'`DatabaseDropper.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseDropper.Tpo $(DEPDIR)/wicher_server-DatabaseDropper.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseDropper.cpp' object='wicher_server-DatabaseDropper.o' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseDropper.o: JSONDatabase/DatabaseDropper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseDropper.o -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseDropper.Tpo -c -o JSONDatabase/wicher_server-DatabaseDropper.o `test -f 'JSONDatabase/DatabaseDropper.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseDropper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseDropper.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseDropper.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseDropper.cpp' object='JSONDatabase/wicher_server-DatabaseDropper.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseDropper.o `test -f 'DatabaseDropper.cpp' || echo '$(srcdir)/'`DatabaseDropper.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseDropper.o `test -f 'JSONDatabase/DatabaseDropper.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseDropper.cpp
 
-wicher_server-DatabaseDropper.obj: DatabaseDropper.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseDropper.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseDropper.Tpo -c -o wicher_server-DatabaseDropper.obj `if test -f 'DatabaseDropper.cpp'; then $(CYGPATH_W) 'DatabaseDropper.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseDropper.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseDropper.Tpo $(DEPDIR)/wicher_server-DatabaseDropper.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseDropper.cpp' object='wicher_server-DatabaseDropper.obj' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseDropper.obj: JSONDatabase/DatabaseDropper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseDropper.obj -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseDropper.Tpo -c -o JSONDatabase/wicher_server-DatabaseDropper.obj `if test -f 'JSONDatabase/DatabaseDropper.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseDropper.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseDropper.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseDropper.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseDropper.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseDropper.cpp' object='JSONDatabase/wicher_server-DatabaseDropper.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseDropper.obj `if test -f 'DatabaseDropper.cpp'; then $(CYGPATH_W) 'DatabaseDropper.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseDropper.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseDropper.obj `if test -f 'JSONDatabase/DatabaseDropper.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseDropper.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseDropper.cpp'; fi`
 
-wicher_server-DatabaseGetter.o: DatabaseGetter.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseGetter.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseGetter.Tpo -c -o wicher_server-DatabaseGetter.o `test -f 'DatabaseGetter.cpp' || echo '$(srcdir)/'`DatabaseGetter.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseGetter.Tpo $(DEPDIR)/wicher_server-DatabaseGetter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseGetter.cpp' object='wicher_server-DatabaseGetter.o' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseGetter.o: JSONDatabase/DatabaseGetter.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseGetter.o -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseGetter.Tpo -c -o JSONDatabase/wicher_server-DatabaseGetter.o `test -f 'JSONDatabase/DatabaseGetter.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseGetter.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseGetter.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseGetter.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseGetter.cpp' object='JSONDatabase/wicher_server-DatabaseGetter.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseGetter.o `test -f 'DatabaseGetter.cpp' || echo '$(srcdir)/'`DatabaseGetter.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseGetter.o `test -f 'JSONDatabase/DatabaseGetter.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseGetter.cpp
 
-wicher_server-DatabaseGetter.obj: DatabaseGetter.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseGetter.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseGetter.Tpo -c -o wicher_server-DatabaseGetter.obj `if test -f 'DatabaseGetter.cpp'; then $(CYGPATH_W) 'DatabaseGetter.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseGetter.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseGetter.Tpo $(DEPDIR)/wicher_server-DatabaseGetter.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseGetter.cpp' object='wicher_server-DatabaseGetter.obj' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseGetter.obj: JSONDatabase/DatabaseGetter.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseGetter.obj -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseGetter.Tpo -c -o JSONDatabase/wicher_server-DatabaseGetter.obj `if test -f 'JSONDatabase/DatabaseGetter.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseGetter.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseGetter.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseGetter.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseGetter.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseGetter.cpp' object='JSONDatabase/wicher_server-DatabaseGetter.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseGetter.obj `if test -f 'DatabaseGetter.cpp'; then $(CYGPATH_W) 'DatabaseGetter.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseGetter.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseGetter.obj `if test -f 'JSONDatabase/DatabaseGetter.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseGetter.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseGetter.cpp'; fi`
 
-wicher_server-DatabaseHelper.o: DatabaseHelper.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseHelper.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseHelper.Tpo -c -o wicher_server-DatabaseHelper.o `test -f 'DatabaseHelper.cpp' || echo '$(srcdir)/'`DatabaseHelper.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseHelper.Tpo $(DEPDIR)/wicher_server-DatabaseHelper.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseHelper.cpp' object='wicher_server-DatabaseHelper.o' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseHelper.o: JSONDatabase/DatabaseHelper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseHelper.o -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseHelper.Tpo -c -o JSONDatabase/wicher_server-DatabaseHelper.o `test -f 'JSONDatabase/DatabaseHelper.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseHelper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseHelper.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseHelper.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseHelper.cpp' object='JSONDatabase/wicher_server-DatabaseHelper.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseHelper.o `test -f 'DatabaseHelper.cpp' || echo '$(srcdir)/'`DatabaseHelper.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseHelper.o `test -f 'JSONDatabase/DatabaseHelper.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseHelper.cpp
 
-wicher_server-DatabaseHelper.obj: DatabaseHelper.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseHelper.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseHelper.Tpo -c -o wicher_server-DatabaseHelper.obj `if test -f 'DatabaseHelper.cpp'; then $(CYGPATH_W) 'DatabaseHelper.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseHelper.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseHelper.Tpo $(DEPDIR)/wicher_server-DatabaseHelper.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseHelper.cpp' object='wicher_server-DatabaseHelper.obj' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseHelper.obj: JSONDatabase/DatabaseHelper.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseHelper.obj -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseHelper.Tpo -c -o JSONDatabase/wicher_server-DatabaseHelper.obj `if test -f 'JSONDatabase/DatabaseHelper.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseHelper.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseHelper.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseHelper.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseHelper.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseHelper.cpp' object='JSONDatabase/wicher_server-DatabaseHelper.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseHelper.obj `if test -f 'DatabaseHelper.cpp'; then $(CYGPATH_W) 'DatabaseHelper.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseHelper.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseHelper.obj `if test -f 'JSONDatabase/DatabaseHelper.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseHelper.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseHelper.cpp'; fi`
 
-wicher_server-DatabaseManager.o: DatabaseManager.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseManager.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseManager.Tpo -c -o wicher_server-DatabaseManager.o `test -f 'DatabaseManager.cpp' || echo '$(srcdir)/'`DatabaseManager.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseManager.Tpo $(DEPDIR)/wicher_server-DatabaseManager.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseManager.cpp' object='wicher_server-DatabaseManager.o' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseManager.o: JSONDatabase/DatabaseManager.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseManager.o -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseManager.Tpo -c -o JSONDatabase/wicher_server-DatabaseManager.o `test -f 'JSONDatabase/DatabaseManager.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseManager.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseManager.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseManager.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseManager.cpp' object='JSONDatabase/wicher_server-DatabaseManager.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseManager.o `test -f 'DatabaseManager.cpp' || echo '$(srcdir)/'`DatabaseManager.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseManager.o `test -f 'JSONDatabase/DatabaseManager.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseManager.cpp
 
-wicher_server-DatabaseManager.obj: DatabaseManager.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseManager.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseManager.Tpo -c -o wicher_server-DatabaseManager.obj `if test -f 'DatabaseManager.cpp'; then $(CYGPATH_W) 'DatabaseManager.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseManager.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseManager.Tpo $(DEPDIR)/wicher_server-DatabaseManager.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseManager.cpp' object='wicher_server-DatabaseManager.obj' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseManager.obj: JSONDatabase/DatabaseManager.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseManager.obj -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseManager.Tpo -c -o JSONDatabase/wicher_server-DatabaseManager.obj `if test -f 'JSONDatabase/DatabaseManager.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseManager.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseManager.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseManager.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseManager.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseManager.cpp' object='JSONDatabase/wicher_server-DatabaseManager.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseManager.obj `if test -f 'DatabaseManager.cpp'; then $(CYGPATH_W) 'DatabaseManager.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseManager.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseManager.obj `if test -f 'JSONDatabase/DatabaseManager.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseManager.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseManager.cpp'; fi`
 
-wicher_server-DatabaseUpdater.o: DatabaseUpdater.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseUpdater.o -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseUpdater.Tpo -c -o wicher_server-DatabaseUpdater.o `test -f 'DatabaseUpdater.cpp' || echo '$(srcdir)/'`DatabaseUpdater.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseUpdater.Tpo $(DEPDIR)/wicher_server-DatabaseUpdater.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseUpdater.cpp' object='wicher_server-DatabaseUpdater.o' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseUpdater.o: JSONDatabase/DatabaseUpdater.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseUpdater.o -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseUpdater.Tpo -c -o JSONDatabase/wicher_server-DatabaseUpdater.o `test -f 'JSONDatabase/DatabaseUpdater.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseUpdater.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseUpdater.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseUpdater.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseUpdater.cpp' object='JSONDatabase/wicher_server-DatabaseUpdater.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseUpdater.o `test -f 'DatabaseUpdater.cpp' || echo '$(srcdir)/'`DatabaseUpdater.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseUpdater.o `test -f 'JSONDatabase/DatabaseUpdater.cpp' || echo '$(srcdir)/'`JSONDatabase/DatabaseUpdater.cpp
 
-wicher_server-DatabaseUpdater.obj: DatabaseUpdater.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DatabaseUpdater.obj -MD -MP -MF $(DEPDIR)/wicher_server-DatabaseUpdater.Tpo -c -o wicher_server-DatabaseUpdater.obj `if test -f 'DatabaseUpdater.cpp'; then $(CYGPATH_W) 'DatabaseUpdater.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseUpdater.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-DatabaseUpdater.Tpo $(DEPDIR)/wicher_server-DatabaseUpdater.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='DatabaseUpdater.cpp' object='wicher_server-DatabaseUpdater.obj' libtool=no @AMDEPBACKSLASH@
+JSONDatabase/wicher_server-DatabaseUpdater.obj: JSONDatabase/DatabaseUpdater.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT JSONDatabase/wicher_server-DatabaseUpdater.obj -MD -MP -MF JSONDatabase/$(DEPDIR)/wicher_server-DatabaseUpdater.Tpo -c -o JSONDatabase/wicher_server-DatabaseUpdater.obj `if test -f 'JSONDatabase/DatabaseUpdater.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseUpdater.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseUpdater.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) JSONDatabase/$(DEPDIR)/wicher_server-DatabaseUpdater.Tpo JSONDatabase/$(DEPDIR)/wicher_server-DatabaseUpdater.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='JSONDatabase/DatabaseUpdater.cpp' object='JSONDatabase/wicher_server-DatabaseUpdater.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-DatabaseUpdater.obj `if test -f 'DatabaseUpdater.cpp'; then $(CYGPATH_W) 'DatabaseUpdater.cpp'; else $(CYGPATH_W) '$(srcdir)/DatabaseUpdater.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o JSONDatabase/wicher_server-DatabaseUpdater.obj `if test -f 'JSONDatabase/DatabaseUpdater.cpp'; then $(CYGPATH_W) 'JSONDatabase/DatabaseUpdater.cpp'; else $(CYGPATH_W) '$(srcdir)/JSONDatabase/DatabaseUpdater.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -707,6 +750,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f JSONDatabase/$(DEPDIR)/$(am__dirstamp)
+	-rm -f JSONDatabase/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -716,7 +761,7 @@ clean: clean-am
 clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf ./$(DEPDIR)
+	-rm -rf ./$(DEPDIR) JSONDatabase/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -762,7 +807,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf ./$(DEPDIR)
+	-rm -rf ./$(DEPDIR) JSONDatabase/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

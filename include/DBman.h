@@ -8,7 +8,9 @@
 
 #include "buildconfig.h"
 
+#include "AuthDB.h"
 #include "DatabaseManager.h"
+#include "JSONDatabase.h"
 
 class DBman{
 	public:
@@ -20,7 +22,10 @@ class DBman{
 	private:
 		std::shared_ptr<spdlog::logger> console;
 		std::vector<int> login_queue;
-		std::map<int,DatabaseManager> instances;
+		std::map<int,DatabaseManager*> instances;
+		AuthDB auth;
+	
+		bool send_msg(int sock, std::string message);
 };
 
 #endif

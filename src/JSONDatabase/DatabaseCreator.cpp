@@ -1,8 +1,8 @@
-#include "DatabaseManager.h"
+#include "JSONDatabase.h"
 #include <algorithm>
 #include <cstring>
 
-bool DatabaseManager::create_item(int id, std::string type, std::string comment, ErrorID * errorid){
+bool JSONDatabase::create_item(int id, std::string type, std::string comment, ErrorID * errorid){
     if(item_exists(id, type)){
         *errorid = ID_INVALID;
         return false;
@@ -20,7 +20,7 @@ bool DatabaseManager::create_item(int id, std::string type, std::string comment,
     *errorid = NONE;
     return true;
 }
-bool DatabaseManager::create_type(std::string id, std::string name, std::string comment, ErrorID * errorid){
+bool JSONDatabase::create_type(std::string id, std::string name, std::string comment, ErrorID * errorid){
     if(type_exists(id)){
         *errorid = ID_INVALID;
         return false;
@@ -34,7 +34,7 @@ bool DatabaseManager::create_type(std::string id, std::string name, std::string 
     *errorid = NONE;
     return true;
 }
-bool DatabaseManager::create_wz(int id, std::string date, std::string person, std::string comment, std::vector<int> item_ids, std::vector<std::string> item_types, ErrorID * errorid){
+bool JSONDatabase::create_wz(int id, std::string date, std::string person, std::string comment, std::vector<int> item_ids, std::vector<std::string> item_types, ErrorID * errorid){
     if(wz_exists(id)){
         *errorid = ID_INVALID;
         return false;
@@ -82,7 +82,7 @@ bool DatabaseManager::create_wz(int id, std::string date, std::string person, st
     *errorid = NONE;
     return true;
 }
-bool DatabaseManager::create_pz(int id, int wz_id, std::string date, std::string person, std::string comment, ErrorID * errorid){
+bool JSONDatabase::create_pz(int id, int wz_id, std::string date, std::string person, std::string comment, ErrorID * errorid){
     if(pz_exists(id)){
         *errorid = ID_INVALID;
         return false;
@@ -113,7 +113,7 @@ bool DatabaseManager::create_pz(int id, int wz_id, std::string date, std::string
     *errorid = NONE;
     return true;
 }
-bool DatabaseManager::create_history(int id, std::string data, ErrorID * errorid){
+bool JSONDatabase::create_history(int id, std::string data, ErrorID * errorid){
     if(history_exists(id)){
         *errorid = ID_INVALID;
         return false;
