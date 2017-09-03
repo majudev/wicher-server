@@ -48,7 +48,7 @@ bool JSONDatabase::create_wz(int id, std::string date, std::string person, std::
     json_t * items_array = json_array();
     unsigned int y = 0;
     while(y != item_ids.size()){
-        json_t * item = get_item_json(item_ids[y], item_types[y], errorid);
+        json_t * item = get_item_js(item_ids[y], item_types[y], errorid);
         if(item == nullptr){
             return false;
         }

@@ -39,6 +39,7 @@ void DBman::drop(int sock){
         console->warn("Host {0}:{1} isn't registered!", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 		return;
 	}
+    this->auth.logout(this->usernames[sock].c_str());
 	if(iter != this->login_queue.end()){
 		this->login_queue.erase(iter);
 	}else{

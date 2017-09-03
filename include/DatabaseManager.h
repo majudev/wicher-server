@@ -27,6 +27,12 @@ class DatabaseManager{
         virtual bool pz_exists(int id) = 0;
         virtual bool wz_free(int wz_id) = 0;
         virtual bool history_exists(int id) = 0;
+    
+        virtual std::string get_item_json(int id, std::string type, ErrorID * errorid) = 0;
+        virtual std::string get_type_json(std::string id, ErrorID * errorid) = 0;
+        virtual std::string get_wz_json(int id, ErrorID * errorid) = 0;
+        virtual std::string get_pz_json(int id, ErrorID * errorid) = 0;
+        virtual std::string get_history_json(int id, ErrorID * errorid) = 0;
 
         virtual std::string error(ErrorID errorid) = 0;
 
@@ -55,8 +61,11 @@ class DatabaseManager{
         virtual std::string get_history() = 0;
         virtual std::string get_wz_items(int id) = 0;
 
+		virtual ~DatabaseManager();
     protected:
-        DatabaseManager(){};
+        DatabaseManager(const char * username);
+        char consolename[512];
+        std::shared_ptr<spdlog::logger> console;
 };
 
 #endif // DATABASEMANAGER_H

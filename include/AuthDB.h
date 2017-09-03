@@ -18,6 +18,7 @@ class AuthDB{
 		AuthDB();
 		RegError reg(const char * username, const char * password); //add to login queue
 		AuthError login(const char * username, const char * password); //check if credentials are correct
+		void logout(const char * username); //log out the user
 		void drop(const char * username); //remove from database
 		
 		void make_admin(const char * username); //makes user admin

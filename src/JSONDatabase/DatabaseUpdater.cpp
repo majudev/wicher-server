@@ -5,7 +5,7 @@ bool JSONDatabase::update_item(int id, std::string type, /*bool update_id, int n
         *errorid = ID_INVALID;
         return false;
     }
-    json_t * obj_ptr = get_item_json(id, type, errorid);
+    json_t * obj_ptr = get_item_js(id, type, errorid);
 
     if(json_is_object(obj_ptr)){
         /*if(update_id && new_id >= 0){
@@ -40,7 +40,7 @@ bool JSONDatabase::update_type(std::string id, bool update_name, std::string new
         return false;
     }
 
-    json_t * obj_ptr = get_type_json(id, errorid);
+    json_t * obj_ptr = get_type_js(id, errorid);
     if(json_is_object(obj_ptr)){
         if(update_name && !new_name.empty()){
             json_object_set_new(obj_ptr, "name", json_string(new_name.c_str()));
@@ -60,7 +60,7 @@ bool JSONDatabase::update_wz(int id, bool update_date, std::string new_date, boo
         *errorid = ID_INVALID;
         return false;
     }
-    json_t * wz_ptr = get_wz_json(id, errorid);
+    json_t * wz_ptr = get_wz_js(id, errorid);
     if(json_is_object(wz_ptr)){
         if(update_date && !new_date.empty()){
             json_object_set_new(wz_ptr, "date", json_string(new_date.c_str()));
@@ -83,7 +83,7 @@ bool JSONDatabase::update_pz(int id, bool update_date, std::string new_date, boo
         *errorid = ID_INVALID;
         return false;
     }
-    json_t * pz_ptr = get_pz_json(id, errorid);
+    json_t * pz_ptr = get_pz_js(id, errorid);
     if(json_is_object(pz_ptr)){
         if(update_date && !new_date.empty()){
             json_object_set_new(pz_ptr, "date", json_string(new_date.c_str()));
@@ -106,7 +106,7 @@ bool JSONDatabase::update_history(int id, bool update_data, std::string data, Er
         *errorid = ID_INVALID;
         return false;
     }
-    json_t * obj_ptr = get_history_json(id, errorid);
+    json_t * obj_ptr = get_history_js(id, errorid);
 
     if(json_is_object(obj_ptr)){
         if(update_data){

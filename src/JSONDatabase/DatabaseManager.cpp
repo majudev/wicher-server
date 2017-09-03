@@ -12,19 +12,19 @@
 
 namespace spd = spdlog;
 
-JSONDatabase::JSONDatabase(std::string path) : path(path), root(nullptr), items(nullptr), types(nullptr), wzs(nullptr), pzs(nullptr), history(nullptr){
+JSONDatabase::JSONDatabase(const char * username, std::string path) : DatabaseManager(username), path(path), root(nullptr), items(nullptr), types(nullptr), wzs(nullptr), pzs(nullptr), history(nullptr){
     FILE * fp = fopen(path.c_str(), "r");
     if(fp){
         json_error_t error;
         root = json_loadf(fp, 0, &error);
         fclose(fp);
         if(!root){
-            spd::get("console")->error(std::string("Error when parsing root:") + std::string(error.text));
-            spd::get("console")->error(std::string("\tSource:") + std::string(error.source));
-            spd::get("console")->error(std::string("\tLine:") + Toolkit::itostr(error.line));
-            spd::get("console")->error(std::string("\tColumn:") + Toolkit::itostr(error.column));
-            spd::get("console")->error(std::string("\tPosition [bytes]:") + Toolkit::itostr(error.position));
-            spd::get("console")->error("Generating empty skeleton...");
+            console->error(std::string("Error when parsing root of ") + path + std::string(": ") + std::string(error.text));
+            console->error(std::string("\tSource:") + std::string(error.source));
+            console->error(std::string("\tLine:") + Toolkit::itostr(error.line));
+            console->error(std::string("\tColumn:") + Toolkit::itostr(error.column));
+            console->error(std::string("\tPosition [bytes]:") + Toolkit::itostr(error.position));
+            console->error("Generating empty skeleton...");
             root = json_object();
             json_object_set_new(root, "items", json_array());
             json_object_set_new(root, "types", json_array());
@@ -33,7 +33,7 @@ JSONDatabase::JSONDatabase(std::string path) : path(path), root(nullptr), items(
             json_object_set_new(root, "history", json_array());
         }
     }else{
-        spd::get("console")->info("Generating empty skeleton...");
+        console->debug("Generating empty skeleton...");
         root = json_object();
         json_object_set_new(root, "items", json_array());
         json_object_set_new(root, "types", json_array());
@@ -49,11 +49,11 @@ JSONDatabase::JSONDatabase(std::string path) : path(path), root(nullptr), items(
 }
 
 JSONDatabase::~JSONDatabase(){
-    spd::get("console")->info("Saving database...");
+    console->debug("Saving database...");
     FILE * fp = fopen(path.c_str(), "w");
     if(json_dumpf(root, fp, JSON_COMPACT) == 0){
-        spd::get("console")->info("OK.");
-    }else spd::get("console")->info("Failed.");
+        console->debug("OK.");
+    }else console->debug("Failed.");
     fclose(fp);
     free(root);
 }

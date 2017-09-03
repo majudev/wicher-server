@@ -254,7 +254,7 @@ std::string JSONDatabase::get_wz_items(int id){
     json_object_set_new(msg_root, "response", json_string("ok"));
 
     ErrorID errorid;
-    json_t * obj = get_wz_json(id, &errorid);
+    json_t * obj = get_wz_js(id, &errorid);
     json_t * array = json_object_get(obj, "items");
     json_t * tarray = json_object_get(obj, "types");
     if(!json_is_array(array) || !json_is_array(tarray)){

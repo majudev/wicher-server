@@ -12,17 +12,23 @@
 
 class JSONDatabase : public DatabaseManager{
     public:
-        JSONDatabase(std::string path);
+        JSONDatabase(const char * username, std::string path);
         int get_next_item_id(std::string type, ErrorID *errorid);
         int get_next_wz_id(ErrorID *errorid);
         int get_next_pz_id(ErrorID *errorid);
         int get_next_history_id(ErrorID *errorid);
 
-        json_t * get_item_json(int id, std::string type, ErrorID * errorid);
-        json_t * get_type_json(std::string id, ErrorID * errorid);
-        json_t * get_wz_json(int id, ErrorID * errorid);
-        json_t * get_pz_json(int id, ErrorID * errorid);
-        json_t * get_history_json(int id, ErrorID * errorid);
+        json_t * get_item_js(int id, std::string type, ErrorID * errorid);
+        json_t * get_type_js(std::string id, ErrorID * errorid);
+        json_t * get_wz_js(int id, ErrorID * errorid);
+        json_t * get_pz_js(int id, ErrorID * errorid);
+        json_t * get_history_js(int id, ErrorID * errorid);
+    
+        std::string get_item_json(int id, std::string type, ErrorID * errorid);
+        std::string get_type_json(std::string id, ErrorID * errorid);
+        std::string get_wz_json(int id, ErrorID * errorid);
+        std::string get_pz_json(int id, ErrorID * errorid);
+        std::string get_history_json(int id, ErrorID * errorid);
 
         bool item_exists(int id, std::string type);
         bool type_exists(std::string id);

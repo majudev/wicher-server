@@ -94,19 +94,19 @@ int JSONDatabase::get_next_history_id(ErrorID *errorid){
 
 bool JSONDatabase::item_exists(int id, std::string type){
     ErrorID eid;
-    json_t * json = get_item_json(id, type, &eid);
+    json_t * json = get_item_js(id, type, &eid);
     return json != nullptr;
 }
 
 bool JSONDatabase::type_exists(std::string id){
     ErrorID eid;
-    json_t * json = get_type_json(id, &eid);
+    json_t * json = get_type_js(id, &eid);
     return json != nullptr;
 }
 
 bool JSONDatabase::wz_exists(int id){
     ErrorID eid;
-    json_t * json = get_wz_json(id, &eid);
+    json_t * json = get_wz_js(id, &eid);
     return json != nullptr;
 }
 
@@ -131,17 +131,17 @@ bool JSONDatabase::wz_free(int wz_id){
 
 bool JSONDatabase::pz_exists(int id){
     ErrorID eid;
-    json_t * json = get_pz_json(id, &eid);
+    json_t * json = get_pz_js(id, &eid);
     return json != nullptr;
 }
 
 bool JSONDatabase::history_exists(int id){
     ErrorID eid;
-    json_t * json = get_history_json(id, &eid);
+    json_t * json = get_history_js(id, &eid);
     return json != nullptr;
 }
 
-json_t * JSONDatabase::get_item_json(int id, std::string type, ErrorID * errorid){
+json_t * JSONDatabase::get_item_js(int id, std::string type, ErrorID * errorid){
     if(!items){
         *errorid = ARRAY_IS_NULL;
         return nullptr;
@@ -165,7 +165,7 @@ json_t * JSONDatabase::get_item_json(int id, std::string type, ErrorID * errorid
     return nullptr;
 }
 
-json_t * JSONDatabase::get_type_json(std::string id, ErrorID * errorid){
+json_t * JSONDatabase::get_type_js(std::string id, ErrorID * errorid){
     if(!types){
         *errorid = ARRAY_IS_NULL;
         return nullptr;
@@ -188,7 +188,7 @@ json_t * JSONDatabase::get_type_json(std::string id, ErrorID * errorid){
     return nullptr;
 }
 
-json_t * JSONDatabase::get_wz_json(int id, ErrorID * errorid){
+json_t * JSONDatabase::get_wz_js(int id, ErrorID * errorid){
     if(!wzs){
         *errorid = ARRAY_IS_NULL;
         return nullptr;
@@ -211,7 +211,7 @@ json_t * JSONDatabase::get_wz_json(int id, ErrorID * errorid){
     return nullptr;
 }
 
-json_t * JSONDatabase::get_pz_json(int id, ErrorID * errorid){
+json_t * JSONDatabase::get_pz_js(int id, ErrorID * errorid){
     if(!pzs){
         *errorid = ARRAY_IS_NULL;
         return nullptr;
@@ -234,7 +234,7 @@ json_t * JSONDatabase::get_pz_json(int id, ErrorID * errorid){
     return nullptr;
 }
 
-json_t * JSONDatabase::get_history_json(int id, ErrorID * errorid){
+json_t * JSONDatabase::get_history_js(int id, ErrorID * errorid){
     if(!history){
         *errorid = ARRAY_IS_NULL;
         return nullptr;
@@ -255,4 +255,54 @@ json_t * JSONDatabase::get_history_json(int id, ErrorID * errorid){
     }
     *errorid = NONE;
     return nullptr;
+}
+
+std::string JSONDatabase::get_item_json(int id, std::string type, ErrorID * errorid){
+    json_t * root = get_item_js(id, type, errorid);
+    if(!root) return std::string("{}");
+    char * response = json_dumps(root, JSON_COMPACT);
+    std::string tr(response);
+    free(response);
+    *errorid = NONE;
+    return tr;
+}
+
+std::string JSONDatabase::get_type_json(std::string id, ErrorID * errorid){
+    json_t * root = get_type_js(id, errorid);
+    if(!root) return std::string("{}");
+    char * response = json_dumps(root, JSON_COMPACT);
+    std::string tr(response);
+    free(response);
+    *errorid = NONE;
+    return tr;
+}
+
+std::string JSONDatabase::get_wz_json(int id, ErrorID * errorid){
+    json_t * root = get_wz_js(id, errorid);
+    if(!root) return std::string("{}");
+    char * response = json_dumps(root, JSON_COMPACT);
+    std::string tr(response);
+    free(response);
+    *errorid = NONE;
+    return tr;
+}
+
+std::string JSONDatabase::get_pz_json(int id, ErrorID * errorid){
+    json_t * root = get_pz_js(id, errorid);
+    if(!root) return std::string("{}");
+    char * response = json_dumps(root, JSON_COMPACT);
+    std::string tr(response);
+    free(response);
+    *errorid = NONE;
+    return tr;
+}
+
+std::string JSONDatabase::get_history_json(int id, ErrorID * errorid){
+    json_t * root = get_history_js(id, errorid);
+    if(!root) return std::string("{}");
+    char * response = json_dumps(root, JSON_COMPACT);
+    std::string tr(response);
+    free(response);
+    *errorid = NONE;
+    return tr;
 }

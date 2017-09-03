@@ -22,6 +22,7 @@ class DBman{
 	private:
 		std::shared_ptr<spdlog::logger> console;
 		std::vector<int> login_queue;
+		std::map<int,std::string> usernames;
 		std::map<int,DatabaseManager*> instances;
 		AuthDB auth;
 	

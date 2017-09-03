@@ -56,15 +56,21 @@ AuthDB::AuthError AuthDB::login(const char * username, const char * password){
 	}
 	if(!strcmp(this->document[username]["password"].GetString(), password)){
         this->logged_in.push_back(std::string(username));
+        console->critical("Logged in {0}", username);
         return AUTH_OK;
     }else return AUTH_WRONG_CREDENTIALS;
+}
+
+void AuthDB::logout(const char * username){
+    std::sort(this->logged_in.begin(), this->logged_in.end());
+    std::vector<std::string>::iterator iter = std::find(this->logged_in.begin(), this->logged_in.end(), std::string(username));
+    if(iter != this->logged_in.end()) this->logged_in.erase(iter);
+    console->critical("Logged out {0}", username);
 }
 
 void AuthDB::drop(const char * username){
     if(!this->document.HasMember(username)) return;
     this->document.RemoveMember(username);
-    std::sort(this->logged_in.begin(), this->logged_in.end());
-    this->logged_in.erase(std::find(this->logged_in.begin(), this->logged_in.end(), std::string(username)));
 }
 
 void AuthDB::make_admin(const char * username){
@@ -91,7 +97,7 @@ DatabaseManager * AuthDB::get_dbman(const char * username){
     const char * db_engine = this->document[username]["db_engine"].GetString();
     const char * db_path = this->document[username]["db_path"].GetString();
     if(!strcmp(db_engine, "JSON")){
-        JSONDatabase * db = new JSONDatabase(std::string(db_path));
+        JSONDatabase * db = new JSONDatabase(username, std::string(db_path));
         return db;
     }else{
         console->warn("Unsupported db_engine '{0}' in AuthDB at username '{1}' - you should check it.", db_engine, username);
