@@ -16,27 +16,27 @@ bool DBman::send_msg(int sock, std::string message){
 	struct sockaddr_in address;
 	socklen_t addrlen = sizeof(address);
 	if(message.size() + 1 > MAX_BUFF){
-        getpeername(sock, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-        console->warn("Failed to send message to {0}:{1} (message too big)", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
-        return false;
-    }
-    uint16_t msize = message.size() + 1;
-    int res = send(sock, &msize, 2, 0);
-    if(res != 2){
-        getpeername(sock, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-        console->debug("Failed to send message to {0}:{1} (cannot send reported message size)", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
-        return false;
-    }
+		getpeername(sock, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+		console->warn("Failed to send message to {0}:{1} (message too big)", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
+		return false;
+	}
+	uint16_t msize = message.size() + 1;
+	int res = send(sock, &msize, 2, 0);
+	if(res != 2){
+		getpeername(sock, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+		console->debug("Failed to send message to {0}:{1} (cannot send reported message size)", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
+		return false;
+	}
 	res = 0;
-    while(res < msize){
-        int res_tmp = send(sock, message.c_str() + res, msize - res, 0);
-        if(res_tmp < 0){
-            getpeername(sock, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-        	console->debug("Failed to send message to {0}:{1} (error when sending)", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
-            return false;
-        }
-        res += res_tmp;
-    }
+	while(res < msize){
+		int res_tmp = send(sock, message.c_str() + res, msize - res, 0);
+		if(res_tmp < 0){
+			getpeername(sock, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+			console->debug("Failed to send message to {0}:{1} (error when sending)", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
+			return false;
+		}
+		res += res_tmp;
+	}
 	return true;
 }
 
@@ -147,7 +147,7 @@ bool DBman::perform(int sock){
 					const char * type = document["type"].GetString();
 					const char * comment = document["comment"].GetString();
 					DatabaseManager::ErrorID eid;
-                    int id = this->instances[sock]->get_next_item_id(type, &eid);
+					int id = this->instances[sock]->get_next_item_id(type, &eid);
 					if(id < 0) return this->send_msg(sock, this->instances[sock]->error(eid));
 					if(!this->instances[sock]->create_item(id, type, comment, &eid)){
 						return this->send_msg(sock, this->instances[sock]->error(eid));

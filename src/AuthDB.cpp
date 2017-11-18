@@ -16,18 +16,19 @@ AuthDB::AuthDB(){
     auto console = spd::stdout_color_mt("auth");
 #endif
 	this->console = console;
-	
 	//init authdb
 	console->info("Opening auth database...");
 	std::ifstream t("auth.db");
-	std::string str;
-	t.seekg(0, std::ios::end);   
-	str.reserve(t.tellg());
-	t.seekg(0, std::ios::beg);
-	str.assign((std::istreambuf_iterator<char>(t)),
-				std::istreambuf_iterator<char>());
-	this->document.Parse(str.c_str());
-	if(!this->document.IsObject()) this->document.SetObject();
+	if (t){
+		std::string str;
+		t.seekg(0, std::ios::end);
+		str.reserve(t.tellg());
+		t.seekg(0, std::ios::beg);
+		str.assign((std::istreambuf_iterator<char>(t)),
+					std::istreambuf_iterator<char>());
+		this->document.Parse(str.c_str());
+		if(!this->document.IsObject()) this->document.SetObject();
+	}
 }
 
 AuthDB::RegError AuthDB::reg(const char * username, const char * password){
