@@ -6,6 +6,11 @@
 
 namespace spd = spdlog;
 
+DBman * DBman::getSingleton() {
+    static DBman singleton;
+    return &singleton;
+}
+
 DBman::DBman(){
 #ifdef SPDLOG_ENABLE_SYSLOG
     auto console = spd::syslog_logger("db", "Wicher-Server", LOG_PID);

@@ -40,7 +40,7 @@ void * networking_handler(void*){
 #endif
 	console->info("Starting WicherDB");
 	
-	DBman db;
+	DBman * db = DBman::getSingleton();
 
         int opt = 1;
         for (int i = 0; i < MAX_CONNECTIONS; i++) {
@@ -112,14 +112,14 @@ void * networking_handler(void*){
                     /** TODO **/
                     //perror("accept");
                     //exit(EXIT_FAILURE);
-                    console->info("closing master socket");
+                    console->info("Closing master socket");
                     running = false;
                 }else{
                     //inform user of socket number - used in send and receive commands
                     console->info("New connection from {0}:{1}", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 
                     //Register in DBman
-                    db.reg(new_socket);
+                    db->reg(new_socket);
 
                     //add new socket to array of sockets
                     for (int i = 0; i < MAX_CONNECTIONS; ++i) {
@@ -138,13 +138,13 @@ void * networking_handler(void*){
 
                 if (FD_ISSET(sd, &readfds)) {
                     //Check if it was for closing, and also perform DBman
-                    if (!db.perform(sd)) {
+                    if (!db->perform(sd)) {
                         //Somebody disconnected , get his details and print
                         getpeername(sd , (struct sockaddr*)&address , (socklen_t*)&addrlen);
                         console->info("Host {0}:{1} disconnected", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 
                         //Drop from DBman
-                        db.drop(sd);
+                        db->drop(sd);
                         
                         //Close the socket and mark as 0 in list for reuse
                         close(sd);

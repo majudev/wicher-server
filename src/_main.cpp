@@ -76,9 +76,9 @@ int main(int argc, char * argv[]){
             return -1;
         }
         
-        console->info("Shutting down");
         pthread_join(control_t, NULL);
         pthread_join(networking_t, NULL);
+        console->info("Shutting down");
     } catch(const spd::spdlog_ex& ex) {
         std::cerr << "Log init failed: " << ex.what() << std::endl;
         return 1;

@@ -9,6 +9,7 @@
 #include <sys/un.h>
 
 #include "networking.h"
+#include "DBman.h"
 
 namespace spd = spdlog;
 
@@ -60,16 +61,35 @@ void * control_handler(void *){
                                         break;
                                 }else buffer[n] = '\0';
                                 
-                                if(!strcmp(buffer, "HALT")){
+                                std::string cmd_full(buffer);
+                                std::vector<std::string> cmd;
+                                int cmd_n = split(cmd_full, cmd, ' ');
+                                
+                                if(cmd_n == 1 && cmd[0] == "HALT"){
                                         console->info("[Control] HALT received");
                                         networking_shutdown();
                                         control_running = false;
                                         n = write(control_clientsock, "OK", 3);
                                         break;
-                                }else if(!strcmp(buffer, "BYE")){
+                                }else if(cmd_n == 1 && cmd[0] == "BYE"){
                                         console->debug("[Control] BYE received");
                                         n = write(control_clientsock, "OK", 3);
                                         break;
+                                }else if(cmd_n == 4 && cmd[0] == "AUTH" && cmd[1] == "REG"){ //AUTH REG {username} {password}
+                                        AuthDB::RegError res = DBman::getSingleton()->auth.reg(cmd[2].c_str(), cmd[3].c_str());
+                                        char resp[32];
+                                        switch(res){
+                                            case AuthDB::REG_ALREADY_EXISTS:
+                                                strcpy(resp, "User already exists!");
+                                                break;
+                                            case AuthDB::REG_INTERNAL_DB_ERROR:
+                                                strcpy(resp, "Internal database error.");
+                                                break;
+                                            case AuthDB::REG_OK:
+                                                strcpy(resp, "Registered successfuly.");
+                                                break;
+                                        }
+                                        n = write(control_clientsock, resp, 32);
                                 }else{
                                         console->debug("[Control] Unknown command received");
                                         n = write(control_clientsock, "Unknown command", 16);
@@ -83,4 +103,23 @@ void * control_handler(void *){
 	close(control_sock);
         
         console->debug("[Control] Loop ended, thread exit");
+}
+
+unsigned int split(const std::string &txt, std::vector<std::string> &strs, char ch){
+    size_t pos = txt.find( ch );
+    size_t initialPos = 0;
+    strs.clear();
+
+    // Decompose statement
+    while( pos != std::string::npos ) {
+        strs.push_back( txt.substr( initialPos, pos - initialPos ) );
+        initialPos = pos + 1;
+
+        pos = txt.find( ch, initialPos );
+    }
+
+    // Add the last one
+    strs.push_back( txt.substr( initialPos, std::min( pos, txt.size() ) - initialPos ) );
+
+    return strs.size();
 }

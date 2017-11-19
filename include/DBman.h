@@ -14,12 +14,15 @@
 
 class DBman{
 	public:
-    	DBman();
+		static DBman * getSingleton();
 		void reg(int sock); //add to login queue
 		bool perform(int sock); //code from MessageParser
 		void drop(int sock); //remove from queue/instances
+		friend void * control_handler(void *);
 
 	private:
+		DBman();
+		DBman(DBman const&);
 		std::shared_ptr<spdlog::logger> console;
 		std::vector<int> login_queue;
 		std::map<int,std::string> usernames;

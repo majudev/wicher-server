@@ -19,7 +19,7 @@ AuthDB::AuthDB(){
 	//init authdb
 	console->info("Opening auth database...");
 	std::ifstream t(Config::getSingleton()->auth_db_path);
-	if (t){
+	if(t){
 		std::string str;
 		t.seekg(0, std::ios::end);
 		str.reserve(t.tellg());
@@ -28,7 +28,9 @@ AuthDB::AuthDB(){
 					std::istreambuf_iterator<char>());
 		this->document.Parse(str.c_str());
 		if(!this->document.IsObject()) this->document.SetObject();
-	}
+	}else{
+        document.SetObject();
+    }
 }
 
 AuthDB::RegError AuthDB::reg(const char * username, const char * password){
@@ -107,7 +109,7 @@ DatabaseManager * AuthDB::get_dbman(const char * username){
 }
 
 AuthDB::~AuthDB(){
-	std::ofstream f("auth.db");
+	std::ofstream f(Config::getSingleton()->auth_db_path);
 	rapidjson::StringBuffer sb;
     rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
     document.Accept(writer);

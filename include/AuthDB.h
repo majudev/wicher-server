@@ -17,7 +17,7 @@ class AuthDB{
     	enum AuthError { AUTH_WRONG_CREDENTIALS, AUTH_NO_USER, AUTH_INTERNAL_DB_ERROR, AUTH_OK };
 	
 		AuthDB();
-		RegError reg(const char * username, const char * password); //add to login queue
+		RegError reg(const char * username, const char * password); //add to the database
 		AuthError login(const char * username, const char * password); //check if credentials are correct
 		void logout(const char * username); //log out the user
 		void drop(const char * username); //remove from database

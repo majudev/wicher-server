@@ -17,7 +17,12 @@ void error(const char * msg){
 }
 
 int main(int argc, char *argv[]){
-    printf("wicher-server-cli v1.0 (c) majudev.net 2017\nUsage: %s [socket-file]\n\n", argv[0]);
+    if(argc != 3){
+        printf("wicher-server-cli v1.0 (c) majudev.net 2017\n");
+        if(argc > 3) printf("Usage: %s [socket-file] [command]\n", argv[0]);
+        else printf("\n");
+        return 0;
+    }
     int sockfd, n;
     struct sockaddr_un serv_addr;
     
@@ -26,7 +31,7 @@ int main(int argc, char *argv[]){
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sun_family = AF_UNIX;
     
-    if(argc == 2){
+    if(argc >= 2){
         strcpy(serv_addr.sun_path, argv[1]);
     }else strcpy(serv_addr.sun_path, SERVER_PATH);
 	
@@ -34,6 +39,16 @@ int main(int argc, char *argv[]){
         error("ERROR connecting");
     
     char buffer[1024];
+    if(argc == 3){
+        write(sockfd, argv[2], strlen(argv[2]) + 1);
+        
+        n = read(sockfd, buffer, 1024);
+        if(n < 0) error("ERROR receiving message");
+        printf("%s\n", buffer);
+        close(sockfd);
+        return 0;
+    }
+    
     size_t pos = 0;
     bool running = true;
     while(running){
