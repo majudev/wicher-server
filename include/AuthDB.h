@@ -14,17 +14,19 @@
 class AuthDB{
 	public:
     	enum RegError { REG_ALREADY_EXISTS, REG_INTERNAL_DB_ERROR, REG_OK };
-    	enum AuthError { AUTH_WRONG_CREDENTIALS, AUTH_NO_USER, AUTH_INTERNAL_DB_ERROR, AUTH_OK };
+    	enum AuthError { AUTH_WRONG_CREDENTIALS, AUTH_NO_USER, AUTH_INTERNAL_DB_ERROR, AUTH_OK, AUTH_INACTIVE };
 	
 		AuthDB();
 		RegError reg(const char * username, const char * password); //add to the database
 		AuthError login(const char * username, const char * password); //check if credentials are correct
 		void logout(const char * username); //log out the user
-		void drop(const char * username); //remove from database
+		bool drop(const char * username); //remove from database
 		
-		void make_admin(const char * username); //makes user admin
-		bool is_admin(const char * username); //check if user is admin
+		bool make_active(const char * username); //makes user active
+		bool make_inactive(const char * username); //makes user inactive
+		bool is_active(const char * username); //check if user is active
 		bool is_logged_in(const char * username); //check if user is logged in
+		std::vector<std::string> get_users();
 		DatabaseManager * get_dbman(const char * username); //get DatabaseManager instance
 	
 		~AuthDB();

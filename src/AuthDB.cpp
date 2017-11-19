@@ -41,7 +41,7 @@ AuthDB::RegError AuthDB::reg(const char * username, const char * password){
     this->document.AddMember(rapidjson::Value(username, this->document.GetAllocator()).Move(), rapidjson::Value().Move(), this->document.GetAllocator());
     this->document[username].SetObject();
     this->document[username].AddMember(rapidjson::Value("password", this->document.GetAllocator()).Move(), rapidjson::Value(password, this->document.GetAllocator()).Move(), this->document.GetAllocator());
-    this->document[username].AddMember(rapidjson::Value("admin", this->document.GetAllocator()).Move(), rapidjson::Value(false).Move(), this->document.GetAllocator());
+    this->document[username].AddMember(rapidjson::Value("active", this->document.GetAllocator()).Move(), rapidjson::Value(false).Move(), this->document.GetAllocator());
     this->document[username].AddMember(rapidjson::Value("db_engine", this->document.GetAllocator()).Move(), rapidjson::Value("JSON", this->document.GetAllocator()).Move(), this->document.GetAllocator());
     this->document[username].AddMember(rapidjson::Value("db_path", this->document.GetAllocator()).Move(), rapidjson::Value(buffer, this->document.GetAllocator()).Move(), this->document.GetAllocator());
     return REG_OK;
@@ -51,12 +51,13 @@ AuthDB::AuthError AuthDB::login(const char * username, const char * password){
 	if(!this->document.HasMember(username)) return AUTH_NO_USER;
 	if(!this->document[username].IsObject() ||
 	   !this->document[username].HasMember("password") || !this->document[username]["password"].IsString() ||
-	   !this->document[username].HasMember("admin") || !this->document[username]["admin"].IsBool() ||
+	   !this->document[username].HasMember("active") || !this->document[username]["active"].IsBool() ||
 	   !this->document[username].HasMember("db_engine") || !this->document[username]["db_engine"].IsString() ||
 	   !this->document[username].HasMember("db_path") || !this->document[username]["db_path"].IsString()){
 		this->drop(username);
 		return AUTH_INTERNAL_DB_ERROR;
 	}
+    if(!this->document[username]["active"].GetBool()) return AUTH_INACTIVE;
 	if(!strcmp(this->document[username]["password"].GetString(), password)){
         this->logged_in.push_back(std::string(username));
         console->critical("Logged in {0}", username);
@@ -71,21 +72,30 @@ void AuthDB::logout(const char * username){
     console->critical("Logged out {0}", username);
 }
 
-void AuthDB::drop(const char * username){
-    if(!this->document.HasMember(username)) return;
+bool AuthDB::drop(const char * username){
+    if(!this->document.HasMember(username)) return false;
     this->document.RemoveMember(username);
+    return true;
 }
 
-void AuthDB::make_admin(const char * username){
+bool AuthDB::make_active(const char * username){
     if(!this->document.HasMember(username) || !this->document[username].IsObject() ||
-	   !this->document[username].HasMember("admin") || !this->document[username]["admin"].IsBool()) return;
-    this->document[username]["admin"] = true;
+	   !this->document[username].HasMember("active") || !this->document[username]["active"].IsBool()) return false;
+    this->document[username]["active"] = true;
+    return true;
 }
 
-bool AuthDB::is_admin(const char * username){
+bool AuthDB::make_inactive(const char * username){
     if(!this->document.HasMember(username) || !this->document[username].IsObject() ||
-	   !this->document[username].HasMember("admin") || !this->document[username]["admin"].IsBool()) return false;
-    return this->document[username]["admin"].GetBool();
+	   !this->document[username].HasMember("active") || !this->document[username]["active"].IsBool()) return false;
+    this->document[username]["active"] = false;
+    return true;
+}
+
+bool AuthDB::is_active(const char * username){
+    if(!this->document.HasMember(username) || !this->document[username].IsObject() ||
+	   !this->document[username].HasMember("active") || !this->document[username]["active"].IsBool()) return false;
+    return this->document[username]["active"].GetBool();
 }
 
 bool AuthDB::is_logged_in(const char * username){
@@ -106,6 +116,14 @@ DatabaseManager * AuthDB::get_dbman(const char * username){
         console->warn("Unsupported db_engine '{0}' in AuthDB at username '{1}' - you should check it.", db_engine, username);
         return NULL;
     }
+}
+
+std::vector<std::string> AuthDB::get_users(){
+    std::vector<std::string> users;
+    for (auto& m : document.GetObject()){
+        users.push_back(m.name.GetString());
+    }
+    return users;
 }
 
 AuthDB::~AuthDB(){

@@ -8,6 +8,7 @@
 #include <netdb.h> 
 #include <sys/un.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #define SERVER_PATH "/tmp/wicher-server-socket"
 
@@ -19,9 +20,10 @@ void error(const char * msg){
 int main(int argc, char *argv[]){
     if(argc != 3){
         printf("wicher-server-cli v1.0 (c) majudev.net 2017\n");
-        if(argc > 3) printf("Usage: %s [socket-file] [command]\n", argv[0]);
-        else printf("\n");
-        return 0;
+        if(argc > 3){
+            printf("Usage: %s [socket-file] [command]\n", argv[0]);
+            return 0;
+        }else printf("\n");
     }
     int sockfd, n;
     struct sockaddr_un serv_addr;
@@ -59,12 +61,12 @@ int main(int argc, char *argv[]){
             ++pos;
         }
         buffer[pos] = '\0';
-        write(sockfd, buffer, pos + 1);
+        n = write(sockfd, buffer, pos);
         pos = 0;
         if(!strcmp(buffer, "HALT") || !strcmp(buffer, "BYE")) running = false;
         
         n = read(sockfd, buffer, 1024);
-        if(n < 0) error("ERROR receiving message");
+        if(n <= 0) error("ERROR receiving message");
         printf("  %s\n", buffer);
         if(!strcmp(buffer, "Unknown command")) running = false;
     }

@@ -76,6 +76,7 @@ void * control_handler(void *){
                                         n = write(control_clientsock, "OK", 3);
                                         break;
                                 }else if(cmd_n == 4 && cmd[0] == "AUTH" && cmd[1] == "REG"){ //AUTH REG {username} {password}
+                                        console->debug("[Control] Received: AUTH REG {0} {1}", cmd[2], cmd[3]);
                                         AuthDB::RegError res = DBman::getSingleton()->auth.reg(cmd[2].c_str(), cmd[3].c_str());
                                         char resp[32];
                                         switch(res){
@@ -90,6 +91,67 @@ void * control_handler(void *){
                                                 break;
                                         }
                                         n = write(control_clientsock, resp, 32);
+                                }else if(cmd_n == 3 && cmd[0] == "AUTH" && cmd[1] == "ACTIVATE"){ //AUTH ACTIVATE {username}
+                                        console->debug("[Control] Received: AUTH ACTIVATE {0}", cmd[2]);
+                                        bool res = DBman::getSingleton()->auth.make_active(cmd[2].c_str());
+                                        char resp[32];
+                                        switch(res){
+                                            case true:
+                                                strcpy(resp, "User activated.");
+                                                break;
+                                            case false:
+                                                strcpy(resp, "Internal database error.");
+                                                break;
+                                        }
+                                        n = write(control_clientsock, resp, 32);
+                                }else if(cmd_n == 3 && cmd[0] == "AUTH" && cmd[1] == "DEACTIVATE"){ //AUTH DEACTIVATE {username}
+                                        console->debug("[Control] Received: AUTH DEACTIVATE {0}", cmd[2]);
+                                        bool res = DBman::getSingleton()->auth.make_inactive(cmd[2].c_str());
+                                        char resp[32];
+                                        switch(res){
+                                            case true:
+                                                strcpy(resp, "User deactivated.");
+                                                break;
+                                            case false:
+                                                strcpy(resp, "Internal database error.");
+                                                break;
+                                        }
+                                        n = write(control_clientsock, resp, 32);
+                                }else if(cmd_n == 3 && cmd[0] == "AUTH" && cmd[1] == "ACTIVE"){ //AUTH ACTIVE {username}
+                                        console->debug("[Control] Received: AUTH ACTIVE {0}", cmd[2]);
+                                        bool res = DBman::getSingleton()->auth.is_active(cmd[2].c_str());
+                                        char resp[32];
+                                        switch(res){
+                                            case true:
+                                                strcpy(resp, "User is active.");
+                                                break;
+                                            case false:
+                                                strcpy(resp, "User is inactive.");
+                                                break;
+                                        }
+                                        n = write(control_clientsock, resp, 32);
+                                }else if(cmd_n == 3 && cmd[0] == "AUTH" && cmd[1] == "DROP"){ //AUTH DROP {username}
+                                        console->debug("[Control] Received: AUTH DROP {0}", cmd[2]);
+                                        bool res = DBman::getSingleton()->auth.drop(cmd[2].c_str());
+                                        char resp[32];
+                                        switch(res){
+                                            case true:
+                                                strcpy(resp, "User deleted.");
+                                                break;
+                                            case false:
+                                                strcpy(resp, "No such user!");
+                                                break;
+                                        }
+                                        n = write(control_clientsock, resp, 32);
+                                }else if(cmd_n == 2 && cmd[0] == "AUTH" && cmd[1] == "LIST"){ //AUTH LIST
+                                        console->debug("[Control] Received: AUTH LIST");
+                                        std::vector<std::string> users = DBman::getSingleton()->auth.get_users();
+                                        std::string res;
+                                        for(auto &str : users){
+                                                res += str;
+                                                res += '\n';
+                                        }
+                                        n = write(control_clientsock, res.c_str(), res.size() + 1);
                                 }else{
                                         console->debug("[Control] Unknown command received");
                                         n = write(control_clientsock, "Unknown command", 16);
