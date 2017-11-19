@@ -5,7 +5,8 @@
 
 #include "Config.h"
 
-extern bool running;
+extern bool control_running;
+extern void control_shutdown();
 extern void * control_handler(void *);
 
 #endif

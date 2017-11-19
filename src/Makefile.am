@@ -7,6 +7,7 @@ wicher_server_SOURCES = DBman.cpp \
 	Config.cpp \
 	Toolkit.cpp \
 	control.cpp \
+	networking.cpp \
 	_main.cpp \
 	DatabaseManager.cpp \
 	JSONDatabase/DatabaseCreator.cpp \

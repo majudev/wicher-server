@@ -109,7 +109,9 @@ am_wicher_server_OBJECTS = wicher_server-DBman.$(OBJEXT) \
 	wicher_server-AuthDB.$(OBJEXT) \
 	wicher_server-MainOptions.$(OBJEXT) \
 	wicher_server-Config.$(OBJEXT) wicher_server-Toolkit.$(OBJEXT) \
-	wicher_server-control.$(OBJEXT) wicher_server-_main.$(OBJEXT) \
+	wicher_server-control.$(OBJEXT) \
+	wicher_server-networking.$(OBJEXT) \
+	wicher_server-_main.$(OBJEXT) \
 	wicher_server-DatabaseManager.$(OBJEXT) \
 	JSONDatabase/wicher_server-DatabaseCreator.$(OBJEXT) \
 	JSONDatabase/wicher_server-DatabaseDropper.$(OBJEXT) \
@@ -300,6 +302,7 @@ wicher_server_SOURCES = DBman.cpp \
 	Config.cpp \
 	Toolkit.cpp \
 	control.cpp \
+	networking.cpp \
 	_main.cpp \
 	DatabaseManager.cpp \
 	JSONDatabase/DatabaseCreator.cpp \
@@ -437,6 +440,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-Toolkit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-_main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-control.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-networking.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseCreator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseDropper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseGetter.Po@am__quote@
@@ -557,6 +561,20 @@ wicher_server-control.obj: control.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='control.cpp' object='wicher_server-control.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-control.obj `if test -f 'control.cpp'; then $(CYGPATH_W) 'control.cpp'; else $(CYGPATH_W) '$(srcdir)/control.cpp'; fi`
+
+wicher_server-networking.o: networking.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-networking.o -MD -MP -MF $(DEPDIR)/wicher_server-networking.Tpo -c -o wicher_server-networking.o `test -f 'networking.cpp' || echo '$(srcdir)/'`networking.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-networking.Tpo $(DEPDIR)/wicher_server-networking.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='networking.cpp' object='wicher_server-networking.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-networking.o `test -f 'networking.cpp' || echo '$(srcdir)/'`networking.cpp
+
+wicher_server-networking.obj: networking.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-networking.obj -MD -MP -MF $(DEPDIR)/wicher_server-networking.Tpo -c -o wicher_server-networking.obj `if test -f 'networking.cpp'; then $(CYGPATH_W) 'networking.cpp'; else $(CYGPATH_W) '$(srcdir)/networking.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-networking.Tpo $(DEPDIR)/wicher_server-networking.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='networking.cpp' object='wicher_server-networking.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-networking.obj `if test -f 'networking.cpp'; then $(CYGPATH_W) 'networking.cpp'; else $(CYGPATH_W) '$(srcdir)/networking.cpp'; fi`
 
 wicher_server-_main.o: _main.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-_main.o -MD -MP -MF $(DEPDIR)/wicher_server-_main.Tpo -c -o wicher_server-_main.o `test -f '_main.cpp' || echo '$(srcdir)/'`_main.cpp

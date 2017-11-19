@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <netdb.h> 
 #include <sys/un.h>
+#include <stdbool.h>
 
 #define SERVER_PATH "/tmp/wicher-server-socket"
 
@@ -34,7 +35,8 @@ int main(int argc, char *argv[]){
     
     char buffer[1024];
     size_t pos = 0;
-    while(1){
+    bool running = true;
+    while(running){
         printf("> ");
         while(pos < 1024){
             buffer[pos] = getchar();
@@ -44,12 +46,12 @@ int main(int argc, char *argv[]){
         buffer[pos] = '\0';
         write(sockfd, buffer, pos + 1);
         pos = 0;
-        if(!strcmp(buffer, "HALT") || !strcmp(buffer, "BYE")) break;
+        if(!strcmp(buffer, "HALT") || !strcmp(buffer, "BYE")) running = false;
         
         n = read(sockfd, buffer, 1024);
         if(n < 0) error("ERROR receiving message");
         printf("  %s\n", buffer);
-        if(!strcmp(buffer, "Unknown command")) break;
+        if(!strcmp(buffer, "Unknown command")) running = false;
     }
     close(sockfd);
     return 0;
