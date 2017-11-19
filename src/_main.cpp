@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <pthread.h>
 
 #include "buildconfig.h"
 
@@ -14,10 +15,13 @@
 #include "Toolkit.h"
 #include "MainOptions.h"
 #include "DBman.h"
+#include "control.h"
 
 #define MAX_CONNECTIONS 30
 
 namespace spd = spdlog;
+
+bool running = true;
 
 void print_help(char * arg0){
     std::cout << "Usage:" << std::endl
@@ -55,6 +59,13 @@ int main(int argc, char * argv[]){
             exit(0);
         }
         console->info("Starting WicherDB");
+        
+        pthread_t control_t;
+        int control_v = pthread_create(&control_t, NULL, control_handler, 0);
+        if(control_v){
+            console->error("Error - pthread_create() return code: {0}\n", control_v);
+            return -1;
+        }
         
         DBman db;
 
@@ -95,7 +106,7 @@ int main(int argc, char * argv[]){
         int sd, max_sd, activity, new_socket, valread;
         struct sockaddr_in address;
         socklen_t addrlen = sizeof(address);
-        while(1){
+        while(running){
             //clear the socket set
             FD_ZERO(&readfds);
             
@@ -171,6 +182,7 @@ int main(int argc, char * argv[]){
         }
         
         console->info("Shutting down");
+        pthread_join(control_t, NULL);
     } catch(const spd::spdlog_ex& ex) {
         std::cerr << "Log init failed: " << ex.what() << std::endl;
         return 1;

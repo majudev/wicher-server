@@ -94,6 +94,7 @@ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_boost_base.m4 \
 	$(top_srcdir)/m4/ax_boost_system.m4 \
 	$(top_srcdir)/m4/ax_boost_thread.m4 \
+	$(top_srcdir)/m4/ax_pthread.m4 \
 	$(top_srcdir)/m4/m4_ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4/pkg.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -111,7 +112,7 @@ am_wicher_server_OBJECTS = wicher_server-DBman.$(OBJEXT) \
 	wicher_server-AuthDB.$(OBJEXT) \
 	wicher_server-MainOptions.$(OBJEXT) \
 	wicher_server-Config.$(OBJEXT) wicher_server-Toolkit.$(OBJEXT) \
-	wicher_server-_main.$(OBJEXT) \
+	wicher_server-control.$(OBJEXT) wicher_server-_main.$(OBJEXT) \
 	wicher_server-DatabaseManager.$(OBJEXT) \
 	JSONDatabase/wicher_server-DatabaseCreator.$(OBJEXT) \
 	JSONDatabase/wicher_server-DatabaseDropper.$(OBJEXT) \
@@ -197,6 +198,7 @@ BOOST_THREAD_LIB = @BOOST_THREAD_LIB@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
+CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
 CXXDEPMODE = @CXXDEPMODE@
@@ -207,7 +209,9 @@ DEPDIR = @DEPDIR@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
+EGREP = @EGREP@
 EXEEXT = @EXEEXT@
+GREP = @GREP@
 HAVE_CXX11 = @HAVE_CXX11@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -232,6 +236,10 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
+PTHREAD_CC = @PTHREAD_CC@
+PTHREAD_CFLAGS = @PTHREAD_CFLAGS@
+PTHREAD_LIBS = @PTHREAD_LIBS@
+SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -247,6 +255,7 @@ am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
 am__tar = @am__tar@
 am__untar = @am__untar@
+ax_pthread_config = @ax_pthread_config@
 bindir = @bindir@
 build = @build@
 build_alias = @build_alias@
@@ -297,6 +306,7 @@ wicher_server_SOURCES = DBman.cpp \
 	MainOptions.cpp \
 	Config.cpp \
 	Toolkit.cpp \
+	control.cpp \
 	_main.cpp \
 	DatabaseManager.cpp \
 	JSONDatabase/DatabaseCreator.cpp \
@@ -433,6 +443,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-MainOptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-Toolkit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-_main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-control.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseCreator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseDropper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseGetter.Po@am__quote@
@@ -539,6 +550,20 @@ wicher_server-Toolkit.obj: Toolkit.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Toolkit.cpp' object='wicher_server-Toolkit.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-Toolkit.obj `if test -f 'Toolkit.cpp'; then $(CYGPATH_W) 'Toolkit.cpp'; else $(CYGPATH_W) '$(srcdir)/Toolkit.cpp'; fi`
+
+wicher_server-control.o: control.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-control.o -MD -MP -MF $(DEPDIR)/wicher_server-control.Tpo -c -o wicher_server-control.o `test -f 'control.cpp' || echo '$(srcdir)/'`control.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-control.Tpo $(DEPDIR)/wicher_server-control.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='control.cpp' object='wicher_server-control.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-control.o `test -f 'control.cpp' || echo '$(srcdir)/'`control.cpp
+
+wicher_server-control.obj: control.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-control.obj -MD -MP -MF $(DEPDIR)/wicher_server-control.Tpo -c -o wicher_server-control.obj `if test -f 'control.cpp'; then $(CYGPATH_W) 'control.cpp'; else $(CYGPATH_W) '$(srcdir)/control.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-control.Tpo $(DEPDIR)/wicher_server-control.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='control.cpp' object='wicher_server-control.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-control.obj `if test -f 'control.cpp'; then $(CYGPATH_W) 'control.cpp'; else $(CYGPATH_W) '$(srcdir)/control.cpp'; fi`
 
 wicher_server-_main.o: _main.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-_main.o -MD -MP -MF $(DEPDIR)/wicher_server-_main.Tpo -c -o wicher_server-_main.o `test -f '_main.cpp' || echo '$(srcdir)/'`_main.cpp

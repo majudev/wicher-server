@@ -18,7 +18,7 @@ AuthDB::AuthDB(){
 	this->console = console;
 	//init authdb
 	console->info("Opening auth database...");
-	std::ifstream t("auth.db");
+	std::ifstream t(Config::getSingleton()->auth_db_path);
 	if (t){
 		std::string str;
 		t.seekg(0, std::ios::end);

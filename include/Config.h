@@ -9,6 +9,8 @@ class Config{
     	static Config * getSingleton();
         bool noadmin;
         int port;
+	std::string control_path;
+	std::string auth_db_path;
 
 	private:
     	Config();

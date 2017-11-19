@@ -12,6 +12,12 @@
 /* define if the compiler supports basic C++11 syntax */
 #undef HAVE_CXX11
 
+/* Define if you have POSIX threads libraries and header files. */
+#undef HAVE_PTHREAD
+
+/* Have PTHREAD_PRIO_INHERIT. */
+#undef HAVE_PTHREAD_PRIO_INHERIT
+
 /* Define to 1 if you have the `syslog' function. */
 #undef HAVE_SYSLOG
 
@@ -35,6 +41,10 @@
 
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
+
+/* Define to necessary symbol if this constant uses a non-standard name on
+   your system. */
+#undef PTHREAD_CREATE_JOINABLE
 
 /* Version number of package */
 #undef VERSION

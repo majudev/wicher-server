@@ -7,6 +7,7 @@
 
 #include "buildconfig.h"
 
+#include "Config.h"
 #include "DatabaseManager.h"
 #include "rapidjson/document.h"
 
