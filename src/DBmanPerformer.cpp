@@ -116,6 +116,7 @@ bool DBman::perform(int sock){
 			}else if(auth_err == AuthDB::AUTH_WRONG_CREDENTIALS) return send_msg(sock, "{\"response\":\"fail\"}");
 			else if(auth_err == AuthDB::AUTH_NO_USER) return send_msg(sock, "{\"response\":\"fail_no_user\"}");
 			else if(auth_err == AuthDB::AUTH_INTERNAL_DB_ERROR) return send_msg(sock, "{\"response\":\"fail_internal_db_error\"}");
+			else if(auth_err == AuthDB::AUTH_INACTIVE) return send_msg(sock, "{\"response\":\"fail_inactive\"}");
 		}else return this->send_msg(sock, "{\"response\":\"login_required\",\"longtext\":\"Please login before accessing the database.\"}"); //it isn't - send info
 	}else{
 		//logged in, perform as in MessageParser using registered DB

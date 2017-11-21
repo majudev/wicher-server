@@ -41,7 +41,7 @@ AuthDB::RegError AuthDB::reg(const char * username, const char * password){
     this->document.AddMember(rapidjson::Value(username, this->document.GetAllocator()).Move(), rapidjson::Value().Move(), this->document.GetAllocator());
     this->document[username].SetObject();
     this->document[username].AddMember(rapidjson::Value("password", this->document.GetAllocator()).Move(), rapidjson::Value(password, this->document.GetAllocator()).Move(), this->document.GetAllocator());
-    this->document[username].AddMember(rapidjson::Value("active", this->document.GetAllocator()).Move(), rapidjson::Value(false).Move(), this->document.GetAllocator());
+    this->document[username].AddMember(rapidjson::Value("active", this->document.GetAllocator()).Move(), rapidjson::Value(true).Move(), this->document.GetAllocator());
     this->document[username].AddMember(rapidjson::Value("db_engine", this->document.GetAllocator()).Move(), rapidjson::Value("JSON", this->document.GetAllocator()).Move(), this->document.GetAllocator());
     this->document[username].AddMember(rapidjson::Value("db_path", this->document.GetAllocator()).Move(), rapidjson::Value(buffer, this->document.GetAllocator()).Move(), this->document.GetAllocator());
     return REG_OK;
