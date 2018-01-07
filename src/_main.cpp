@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <pthread.h>
+#include <signal.h>
 
 #include "buildconfig.h"
 
@@ -31,6 +32,12 @@ void print_help(char * arg0){
         << "  -A                    disable admin socket" << std::endl
         << "  -h                    show help" << std::endl
         << "  -p [port]             set listening port number" << std::endl;
+}
+
+void signal_handler(int sig){
+    spdlog::get("main")->info("SIGINT/SIGTERM/SIGKILL received");
+    networking_shutdown();
+    control_shutdown();
 }
 
 int main(int argc, char * argv[]){
@@ -64,17 +71,22 @@ int main(int argc, char * argv[]){
         pthread_t control_t;
         int control_v = pthread_create(&control_t, NULL, control_handler, 0);
         if(control_v){
-            console->error("Error - pthread_create() return code: {0}\n", control_v);
+            console->error("Error - pthread_create() return code: {0}", control_v);
             return -1;
         }
         
         pthread_t networking_t;
         int networking_v = pthread_create(&control_t, NULL, networking_handler, 0);
         if(networking_v){
-            control_running = false;
-            console->error("Error - pthread_create() return code: {0}\n", control_v);
+            control_shutdown();
+            console->error("Error - pthread_create() return code: {0}", control_v);
             return -1;
         }
+        
+        console->info("Registering interrupts...");
+        signal(SIGINT, signal_handler);
+        signal(SIGTERM, signal_handler);
+        signal(SIGKILL, signal_handler);
         
         pthread_join(control_t, NULL);
         pthread_join(networking_t, NULL);

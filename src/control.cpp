@@ -167,6 +167,11 @@ void * control_handler(void *){
         console->debug("[Control] Loop ended, thread exit");
 }
 
+void control_shutdown(){
+        control_running = false;
+        shutdown(control_sock, SHUT_RDWR);
+}
+
 unsigned int split(const std::string &txt, std::vector<std::string> &strs, char ch){
     size_t pos = txt.find( ch );
     size_t initialPos = 0;
