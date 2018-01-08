@@ -29,9 +29,11 @@ void print_help(char * arg0){
     std::cout << "Usage:" << std::endl
         << arg0 << " [options]" << std::endl << std::endl
         << "Possible options are:" << std::endl
-        << "  -A                    disable admin socket" << std::endl
         << "  -h                    show help" << std::endl
-        << "  -p [port]             set listening port number" << std::endl;
+        << "  -A                    disable admin socket" << std::endl
+        << "  -D                    enable debug" << std::endl
+        << "  -p [port]             set listening port number" << std::endl
+        << "  -d [datadir]          set data directory" << std::endl;
 }
 
 void signal_handler(int sig){
@@ -48,7 +50,8 @@ int main(int argc, char * argv[]){
     }
     Config::getSingleton()->noadmin = mo.hasKey("-A");
     Config::getSingleton()->port = mo.getParamFromKey("-p") ? Toolkit::strtoi(mo.getParamFromKey("-p")->second) : 63431;
-    if(mo.hasKey("-d")) spd::set_level(spd::level::debug);
+    if(mo.hasKey("-d")) Config::getSingleton()->set_datadir(mo.getParamFromKey("-d")->second);
+    if(mo.hasKey("-D")) spd::set_level(spd::level::debug);
     try{
 #ifdef SPDLOG_ENABLE_SYSLOG
         auto console = spd::syslog_logger("main", "Wicher-Server", LOG_PID);

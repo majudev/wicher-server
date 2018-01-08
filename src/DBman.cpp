@@ -18,7 +18,6 @@ DBman::DBman(){
     auto console = spd::stdout_color_mt("db");
 #endif
 	this->console = console;
-	//init authdb
 }
 
 void DBman::reg(int sock){

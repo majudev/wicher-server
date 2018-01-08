@@ -24,6 +24,10 @@ void * control_handler(void *){
 #endif
 	console->info("[Control] Handler spawned");
 	struct sockaddr_un server_addr;
+        
+        if(Config::getSingleton()->noadmin){
+                console->info("[Control] Control disabled, exiting...");
+        }
 
         console->info("[Control] Creating control_socket for server");
         if((control_sock = socket(AF_UNIX, SOCK_STREAM, 0)) == 0) {
@@ -168,6 +172,7 @@ void * control_handler(void *){
 }
 
 void control_shutdown(){
+        if(Config::getSingleton()->noadmin) return;
         control_running = false;
         shutdown(control_sock, SHUT_RDWR);
 }

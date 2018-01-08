@@ -18,7 +18,7 @@ AuthDB::AuthDB(){
 	this->console = console;
 	//init authdb
 	console->info("Opening auth database...");
-	std::ifstream t(Config::getSingleton()->auth_db_path);
+	std::ifstream t(Config::getSingleton()->get_auth_db_path());
 	if(t){
 		std::string str;
 		t.seekg(0, std::ios::end);
@@ -37,13 +37,15 @@ AuthDB::RegError AuthDB::reg(const char * username, const char * password){
     if(this->document.HasMember(username)) return REG_ALREADY_EXISTS;
     char buffer[512];
     strcpy(buffer, username);
-    strcat(buffer, ".jsondb");
+    strcat(buffer, ".db");
+    if(!Config::getSingleton()->create_user_db_dir(buffer)) return REG_INTERNAL_DB_ERROR;
     this->document.AddMember(rapidjson::Value(username, this->document.GetAllocator()).Move(), rapidjson::Value().Move(), this->document.GetAllocator());
     this->document[username].SetObject();
     this->document[username].AddMember(rapidjson::Value("password", this->document.GetAllocator()).Move(), rapidjson::Value(password, this->document.GetAllocator()).Move(), this->document.GetAllocator());
     this->document[username].AddMember(rapidjson::Value("active", this->document.GetAllocator()).Move(), rapidjson::Value(true).Move(), this->document.GetAllocator());
     this->document[username].AddMember(rapidjson::Value("db_engine", this->document.GetAllocator()).Move(), rapidjson::Value("JSON", this->document.GetAllocator()).Move(), this->document.GetAllocator());
     this->document[username].AddMember(rapidjson::Value("db_path", this->document.GetAllocator()).Move(), rapidjson::Value(buffer, this->document.GetAllocator()).Move(), this->document.GetAllocator());
+    this->document[username].AddMember(rapidjson::Value("protomod", this->document.GetAllocator()).Move(), rapidjson::Value(false).Move(), this->document.GetAllocator());
     return REG_OK;
 }
 
@@ -74,6 +76,9 @@ void AuthDB::logout(const char * username){
 
 bool AuthDB::drop(const char * username){
     if(!this->document.HasMember(username)) return false;
+    if(!this->document[username].IsObject() ||
+	   !this->document[username].HasMember("db_path") || !this->document[username]["db_path"].IsString()) return false;
+    if(!Config::getSingleton()->remove_user_db_dir(this->document[username]["db_path"].GetString())) return false;
     this->document.RemoveMember(username);
     return true;
 }
@@ -107,10 +112,14 @@ DatabaseManager * AuthDB::get_dbman(const char * username){
     if(!this->document.HasMember(username) || !this->document[username].IsObject() ||
 	   !this->document[username].HasMember("db_engine") || !this->document[username]["db_engine"].IsString() ||
 	   !this->document[username].HasMember("db_path") || !this->document[username]["db_path"].IsString()) return NULL;
+    if(this->document[username].HasMember("protomod") && this->document[username]["protomod"].IsBool()
+       && this->document[username]["protomod"].GetBool()){
+        //protomod handling part
+    }
     const char * db_engine = this->document[username]["db_engine"].GetString();
     const char * db_path = this->document[username]["db_path"].GetString();
     if(!strcmp(db_engine, "JSON")){
-        JSONDatabase * db = new JSONDatabase(username, std::string(db_path));
+        JSONDatabase * db = new JSONDatabase(username, std::string(db_path) + "/database.json");
         return db;
     }else{
         console->warn("Unsupported db_engine '{0}' in AuthDB at username '{1}' - you should check it.", db_engine, username);
@@ -127,7 +136,7 @@ std::vector<std::string> AuthDB::get_users(){
 }
 
 AuthDB::~AuthDB(){
-	std::ofstream f(Config::getSingleton()->auth_db_path);
+	std::ofstream f(Config::getSingleton()->get_auth_db_path());
 	rapidjson::StringBuffer sb;
     rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(sb);
     document.Accept(writer);
