@@ -1,6 +1,7 @@
 AM_CXXFLAGS = -I$(top_srcdir)/include -std=gnu++11
 bin_PROGRAMS = wicher-server
-wicher_server_SOURCES = DBman.cpp \
+wicher_server_SOURCES = sha256.cpp \
+	DBman.cpp \
 	DBmanPerformer.cpp \
 	AuthDB.cpp \
 	MainOptions.cpp \

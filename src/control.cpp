@@ -10,6 +10,7 @@
 
 #include "networking.h"
 #include "DBman.h"
+#include "sha256.h"
 
 namespace spd = spdlog;
 
@@ -81,7 +82,9 @@ void * control_handler(void *){
                                         break;
                                 }else if(cmd_n == 4 && cmd[0] == "AUTH" && cmd[1] == "REG"){ //AUTH REG {username} {password}
                                         console->debug("[Control] Received: AUTH REG {0} {1}", cmd[2], cmd[3]);
-                                        AuthDB::RegError res = DBman::getSingleton()->auth.reg(cmd[2].c_str(), cmd[3].c_str());
+                                        SHA256 sha256;
+                                        std::string passwd = sha256(cmd[3]);
+                                        AuthDB::RegError res = DBman::getSingleton()->auth.reg(cmd[2].c_str(), passwd.c_str());
                                         char resp[32];
                                         switch(res){
                                             case AuthDB::REG_ALREADY_EXISTS:

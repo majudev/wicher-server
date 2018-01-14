@@ -104,7 +104,8 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_wicher_server_OBJECTS = wicher_server-DBman.$(OBJEXT) \
+am_wicher_server_OBJECTS = wicher_server-sha256.$(OBJEXT) \
+	wicher_server-DBman.$(OBJEXT) \
 	wicher_server-DBmanPerformer.$(OBJEXT) \
 	wicher_server-AuthDB.$(OBJEXT) \
 	wicher_server-MainOptions.$(OBJEXT) \
@@ -295,7 +296,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CXXFLAGS = -I$(top_srcdir)/include -std=gnu++11
-wicher_server_SOURCES = DBman.cpp \
+wicher_server_SOURCES = sha256.cpp \
+	DBman.cpp \
 	DBmanPerformer.cpp \
 	AuthDB.cpp \
 	MainOptions.cpp \
@@ -441,6 +443,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-_main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-control.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-networking.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wicher_server-sha256.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseCreator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseDropper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@JSONDatabase/$(DEPDIR)/wicher_server-DatabaseGetter.Po@am__quote@
@@ -463,6 +466,20 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+wicher_server-sha256.o: sha256.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-sha256.o -MD -MP -MF $(DEPDIR)/wicher_server-sha256.Tpo -c -o wicher_server-sha256.o `test -f 'sha256.cpp' || echo '$(srcdir)/'`sha256.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-sha256.Tpo $(DEPDIR)/wicher_server-sha256.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sha256.cpp' object='wicher_server-sha256.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-sha256.o `test -f 'sha256.cpp' || echo '$(srcdir)/'`sha256.cpp
+
+wicher_server-sha256.obj: sha256.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-sha256.obj -MD -MP -MF $(DEPDIR)/wicher_server-sha256.Tpo -c -o wicher_server-sha256.obj `if test -f 'sha256.cpp'; then $(CYGPATH_W) 'sha256.cpp'; else $(CYGPATH_W) '$(srcdir)/sha256.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/wicher_server-sha256.Tpo $(DEPDIR)/wicher_server-sha256.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sha256.cpp' object='wicher_server-sha256.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wicher_server-sha256.obj `if test -f 'sha256.cpp'; then $(CYGPATH_W) 'sha256.cpp'; else $(CYGPATH_W) '$(srcdir)/sha256.cpp'; fi`
 
 wicher_server-DBman.o: DBman.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wicher_server_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wicher_server-DBman.o -MD -MP -MF $(DEPDIR)/wicher_server-DBman.Tpo -c -o wicher_server-DBman.o `test -f 'DBman.cpp' || echo '$(srcdir)/'`DBman.cpp
