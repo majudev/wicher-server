@@ -143,6 +143,8 @@ bool DBman::perform(int sock){
 				}
 			}else if(!strcmp(request, "register")){
 				if(!strcmp(request_type, "item")){
+					///receives: type, comment
+                    ///returns: full entry
 					if(!document.HasMember("type") || !document["type"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("comment") || !document["comment"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					const char * type = document["type"].GetString();
@@ -158,6 +160,8 @@ bool DBman::perform(int sock){
 					response += "}";
 					return this->send_msg(sock, response);
 				}else if(!strcmp(request_type, "type")){
+					///receives: id, name, comment
+                    ///returns: full entry
 					if(!document.HasMember("id") || !document["id"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("name") || !document["name"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("comment") || !document["comment"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
@@ -172,11 +176,57 @@ bool DBman::perform(int sock){
 					response += this->instances[sock]->get_type_json(id, &eid);
 					response += "}";
 					return this->send_msg(sock, response);
-				}/*else if(!strcmp(request_type, "wz")){
-				}else if(!strcmp(request_type, "pz"){
-				}*/ //TODO
+				}else if(!strcmp(request_type, "wz")){
+					///receives: date, person, comment, items
+                    ///returns: full entry without items
+					if(!document.HasMember("date") || !document["date"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
+					if(!document.HasMember("person") || !document["person"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
+					if(!document.HasMember("comment") || !document["comment"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
+					if(!document.HasMember("items") || !document["items"].IsArray()) return this->send_msg(sock, REQUEST_UNDEF);
+					auto items = document["items"].GetArray();
+					std::vector<int> item_ids;
+                    std::vector<std::string> item_types;
+					
+					for(rapidjson::Value::ConstValueIterator itr = items.Begin(); itr != items.End(); ++itr){
+						if(!itr->IsObject()) return this->send_msg(sock, REQUEST_UNDEF);
+						auto obj = itr->GetObject();
+						if(!obj.HasMember("id") || !obj["id"].IsInt()
+						   || !obj.HasMember("type") || !obj["type"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
+						item_ids.push_back(obj["id"].GetInt());
+						item_types.push_back(obj["type"].GetString());
+					}
+					
+					DatabaseManager::ErrorID eid;
+					int id = this->instances[sock]->get_next_wz_id(&eid);
+					if(id < 0) return this->send_msg(sock, this->instances[sock]->error(eid));
+					if(!this->instances[sock]->create_wz(id, document["date"].GetString(), document["person"].GetString(), document["comment"].GetString(), item_ids, item_types, &eid)) return this->send_msg(sock, this->instances[sock]->error(eid));
+					
+					std::string response("{\"response\":\"ok\",\"wz\":");
+					response += this->instances[sock]->get_wz_json(id, &eid);
+					response += "}";
+					return this->send_msg(sock, response);
+				}else if(!strcmp(request_type, "pz")){
+					///receives: wz_id, date, person, comment
+                    ///returns: full entry
+					if(!document.HasMember("wz_id") || !document["wz_id"].IsInt()) return this->send_msg(sock, REQUEST_UNDEF);
+					if(!document.HasMember("date") || !document["date"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
+					if(!document.HasMember("person") || !document["person"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
+					if(!document.HasMember("comment") || !document["comment"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
+					
+					DatabaseManager::ErrorID eid;
+					int id = this->instances[sock]->get_next_pz_id(&eid);
+					if(id < 0) return this->send_msg(sock, this->instances[sock]->error(eid));
+					if(!this->instances[sock]->create_pz(id, document["wz_id"].GetInt(), document["date"].GetString(), document["person"].GetString(), document["comment"].GetString(), &eid)) return this->send_msg(sock, this->instances[sock]->error(eid));
+					
+					std::string response("{\"response\":\"ok\",\"pz\":");
+					response += this->instances[sock]->get_pz_json(id, &eid);
+					response += "}";
+					return this->send_msg(sock, response);
+				}
 			}else if(!strcmp(request, "drop")){
 				if(!strcmp(request_type, "item")){
+					///receives: id, type
+                    ///returns: RESP_OK
 					if(!document.HasMember("id") || !document["id"].IsInt()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("type") || !document["type"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					int id = document["id"].GetInt();
@@ -187,6 +237,8 @@ bool DBman::perform(int sock){
 					}
 					return this->send_msg(sock, RESP_OK);
 				}else if(!strcmp(request_type, "type")){
+					///receives: id
+                    ///returns: RESP_OK
 					if(!document.HasMember("id") || !document["id"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					const char * id = document["id"].GetString();
 					DatabaseManager::ErrorID eid;
@@ -195,6 +247,8 @@ bool DBman::perform(int sock){
 					}
 					return this->send_msg(sock, RESP_OK);
 				}else if(!strcmp(request_type, "wz")){
+					///receives: id
+                    ///returns: RESP_OK
 					if(!document.HasMember("id") || !document["id"].IsInt()) return this->send_msg(sock, REQUEST_UNDEF);
 					int id = document["id"].GetInt();
 					DatabaseManager::ErrorID eid;
@@ -203,6 +257,8 @@ bool DBman::perform(int sock){
 					}
 					return this->send_msg(sock, RESP_OK);
 				}else if(!strcmp(request_type, "pz")){
+					///receives: id
+                    ///returns: RESP_OK
 					if(!document.HasMember("id") || !document["id"].IsInt()) return this->send_msg(sock, REQUEST_UNDEF);
 					int id = document["id"].GetInt();
 					DatabaseManager::ErrorID eid;
@@ -212,7 +268,7 @@ bool DBman::perform(int sock){
 					return this->send_msg(sock, RESP_OK);
 				}
 			}/*else if(!strcmp(request, "change")){
-			}*/
+			}*/ //TODO
 		}
 		//if there are any requests without request_type, they will appear here
 		return this->send_msg(sock, REQUEST_UNDEF);
