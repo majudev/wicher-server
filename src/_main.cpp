@@ -33,7 +33,8 @@ void print_help(char * arg0){
         << "  -A                    disable admin socket" << std::endl
         << "  -D                    enable debug" << std::endl
         << "  -p [port]             set listening port number" << std::endl
-        << "  -d [datadir]          set data directory" << std::endl;
+        << "  -d [datadir]          set data directory" << std::endl
+        << "  -N                    don't fork" << std::endl;
 }
 
 void signal_handler(int sig){
@@ -59,16 +60,18 @@ int main(int argc, char * argv[]){
         auto console = spd::stdout_color_mt("main");
 #endif
 
-        pid_t pid = fork();
+        if(!mo.hasKey("-N")){
+            pid_t pid = fork();
 
-        if (pid == -1){
-            std::cerr << "Cannot fork! " << strerror(errno) << std::endl;
-            return -1;
-        }else if(pid == 0){
-            console->info("Forked!");
-        }else{
-            std::cout << "Forked child with pid " << pid << std::endl;
-            exit(0);
+            if (pid == -1){
+                std::cerr << "Cannot fork! " << strerror(errno) << std::endl;
+                return -1;
+            }else if(pid == 0){
+                console->info("Forked!");
+            }else{
+                std::cout << "Forked child with pid " << pid << std::endl;
+                exit(0);
+            }
         }
         
         pthread_t control_t;

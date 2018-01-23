@@ -37,8 +37,8 @@ AuthDB::RegError AuthDB::reg(const char * username, const char * password){
     if(this->document.HasMember(username)) return REG_ALREADY_EXISTS;
     char buffer[512];
     strcpy(buffer, username);
-    strcat(buffer, ".db");
-    if(!Config::getSingleton()->create_user_db_dir(buffer)) return REG_INTERNAL_DB_ERROR;
+    strcat(buffer, "/database.json");
+    if(!Config::getSingleton()->create_user_db_dir(username)) return REG_INTERNAL_DB_ERROR;
     this->document.AddMember(rapidjson::Value(username, this->document.GetAllocator()).Move(), rapidjson::Value().Move(), this->document.GetAllocator());
     this->document[username].SetObject();
     this->document[username].AddMember(rapidjson::Value("password", this->document.GetAllocator()).Move(), rapidjson::Value(password, this->document.GetAllocator()).Move(), this->document.GetAllocator());
@@ -119,7 +119,7 @@ DatabaseManager * AuthDB::get_dbman(const char * username){
     const char * db_engine = this->document[username]["db_engine"].GetString();
     const char * db_path = this->document[username]["db_path"].GetString();
     if(!strcmp(db_engine, "JSON")){
-        JSONDatabase * db = new JSONDatabase(username, std::string(db_path) + "/database.json");
+        JSONDatabase * db = new JSONDatabase(username, Config::getSingleton()->get_db_path() + "/" + std::string(db_path));
         return db;
     }else{
         console->warn("Unsupported db_engine '{0}' in AuthDB at username '{1}' - you should check it.", db_engine, username);

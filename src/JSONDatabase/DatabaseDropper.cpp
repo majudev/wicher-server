@@ -114,7 +114,6 @@ bool JSONDatabase::drop_pz(int id, ErrorID * errorid){
                 return false;
             }
             json_array_remove(pzs, x);
-            std::cout << "cycus-machalicus" << std::endl;
             *errorid = NONE;
             return true;
         }

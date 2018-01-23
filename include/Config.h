@@ -11,7 +11,7 @@ class Config{
         int port;
 		std::string control_path;
 		std::string get_auth_db_path();
-		std::string get_json_db_path();
+		std::string get_db_path();
 		std::string get_stuff_path();
 		bool set_datadir(std::string datadir);
 		bool create_user_db_dir(std::string username);

@@ -63,7 +63,7 @@ std::string Config::get_auth_db_path(){
 	return this->datadir + "/auth.db";
 }
 
-std::string Config::get_json_db_path(){
+std::string Config::get_db_path(){
 	return this->datadir + "/db";
 }
 
