@@ -42,7 +42,7 @@ class DatabaseManager{
         virtual bool create_pz(int id, int wz_id, std::string date, std::string person, std::string comment, ErrorID *errorid) = 0;
         virtual bool create_history(int id, std::string data, ErrorID *errorid) = 0;
 
-        virtual bool update_item(int id, std::string type, /*bool update_id, int new_id, */bool update_wz, int wz_id, bool update_comment, std::string comment, ErrorID * errorid) = 0;
+        virtual bool update_item(int id, std::string type, std::string comment, ErrorID * errorid) = 0;
         virtual bool update_type(std::string id, bool update_name, std::string new_name, bool update_comment, std::string new_comment, ErrorID *errorid) = 0;
         virtual bool update_wz(int id, bool update_date, std::string new_date, bool update_person, std::string new_person, bool update_comment, std::string new_comment, ErrorID *errorid) = 0;
         virtual bool update_pz(int id, bool update_date, std::string new_date, bool update_person, std::string new_person, bool update_comment, std::string new_comment, ErrorID *errorid) = 0;

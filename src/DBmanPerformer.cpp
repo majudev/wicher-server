@@ -45,27 +45,27 @@ bool DBman::perform(int sock){
 	uint16_t msize;
 	struct sockaddr_in address;
 	socklen_t addrlen = sizeof(address);
-    int res = recv(sock, &msize, 2, 0);
-    if(res != 2){
+	int res = recv(sock, &msize, 2, 0);
+	if(res != 2){
 		getpeername(sock, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-        console->debug("Failed to recv message from {0}:{1} (cannot get reported message size)", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
+		console->debug("Failed to recv message from {0}:{1} (cannot get reported message size)", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 		return false;
-    }
-    std::string message;
+	}
+	std::string message;
 	char buffer[1025];
-    res = 0;
-    while(res < msize){
-        int res_tmp = recv(sock, buffer, 1024, 0);
-        if(res_tmp < 0){
-            getpeername(sock, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+	res = 0;
+	while(res < msize){
+		int res_tmp = recv(sock, buffer, 1024, 0);
+		if(res_tmp < 0){
+			getpeername(sock, (struct sockaddr*)&address, (socklen_t*)&addrlen);
 			console->debug("Failed to recv message from {0}:{1} (error when getting message)", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 			return false;
-        }
-        buffer[res_tmp] = '\0';
-        res += res_tmp;
-        message += buffer;
-    }
-    if(res != msize){
+		}
+		buffer[res_tmp] = '\0';
+		res += res_tmp;
+		message += buffer;
+	}
+	if(res != msize){
 		getpeername(sock, (struct sockaddr*)&address, (socklen_t*)&addrlen);
 		console->debug("Failed to recv message from {0}:{1} (reported size is {2} while real is {3})", inet_ntoa(address.sin_addr), ntohs(address.sin_port), res, msize);
 		return false;
@@ -93,7 +93,7 @@ bool DBman::perform(int sock){
 		if(!strcmp(request, "login")){
 			//yes it is, try to login
 			if(!document.HasMember("login") || !document["login"].IsString() ||
-			     !document.HasMember("password") || !document["password"].IsString()){
+				 !document.HasMember("password") || !document["password"].IsString()){
 				//instead of return true; we use return value of send_msg
 				//because if something goes wrong with sending, socket is anyway closed - so function should return false
 				return this->send_msg(sock, "{\"response\":\"wrong_json\",\"longtext\":\"'login' and/or 'password' is not a valid string.\"}");
@@ -144,7 +144,7 @@ bool DBman::perform(int sock){
 			}else if(!strcmp(request, "register")){
 				if(!strcmp(request_type, "item")){
 					///receives: type, comment
-                    ///returns: full entry
+					///returns: full entry
 					if(!document.HasMember("type") || !document["type"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("comment") || !document["comment"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					const char * type = document["type"].GetString();
@@ -161,7 +161,7 @@ bool DBman::perform(int sock){
 					return this->send_msg(sock, response);
 				}else if(!strcmp(request_type, "type")){
 					///receives: id, name, comment
-                    ///returns: full entry
+					///returns: full entry
 					if(!document.HasMember("id") || !document["id"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("name") || !document["name"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("comment") || !document["comment"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
@@ -178,14 +178,14 @@ bool DBman::perform(int sock){
 					return this->send_msg(sock, response);
 				}else if(!strcmp(request_type, "wz")){
 					///receives: date, person, comment, items
-                    ///returns: full entry without items
+					///returns: full entry without items
 					if(!document.HasMember("date") || !document["date"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("person") || !document["person"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("comment") || !document["comment"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("items") || !document["items"].IsArray()) return this->send_msg(sock, REQUEST_UNDEF);
 					auto items = document["items"].GetArray();
 					std::vector<int> item_ids;
-                    std::vector<std::string> item_types;
+					std::vector<std::string> item_types;
 					
 					for(rapidjson::Value::ConstValueIterator itr = items.Begin(); itr != items.End(); ++itr){
 						if(!itr->IsObject()) return this->send_msg(sock, REQUEST_UNDEF);
@@ -207,7 +207,7 @@ bool DBman::perform(int sock){
 					return this->send_msg(sock, response);
 				}else if(!strcmp(request_type, "pz")){
 					///receives: wz_id, date, person, comment
-                    ///returns: full entry
+					///returns: full entry
 					if(!document.HasMember("wz_id") || !document["wz_id"].IsInt()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("date") || !document["date"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("person") || !document["person"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
@@ -226,7 +226,7 @@ bool DBman::perform(int sock){
 			}else if(!strcmp(request, "drop")){
 				if(!strcmp(request_type, "item")){
 					///receives: id, type
-                    ///returns: RESP_OK
+					///returns: RESP_OK
 					if(!document.HasMember("id") || !document["id"].IsInt()) return this->send_msg(sock, REQUEST_UNDEF);
 					if(!document.HasMember("type") || !document["type"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					int id = document["id"].GetInt();
@@ -238,7 +238,7 @@ bool DBman::perform(int sock){
 					return this->send_msg(sock, RESP_OK);
 				}else if(!strcmp(request_type, "type")){
 					///receives: id
-                    ///returns: RESP_OK
+					///returns: RESP_OK
 					if(!document.HasMember("id") || !document["id"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
 					const char * id = document["id"].GetString();
 					DatabaseManager::ErrorID eid;
@@ -248,7 +248,7 @@ bool DBman::perform(int sock){
 					return this->send_msg(sock, RESP_OK);
 				}else if(!strcmp(request_type, "wz")){
 					///receives: id
-                    ///returns: RESP_OK
+					///returns: RESP_OK
 					if(!document.HasMember("id") || !document["id"].IsInt()) return this->send_msg(sock, REQUEST_UNDEF);
 					int id = document["id"].GetInt();
 					DatabaseManager::ErrorID eid;
@@ -258,7 +258,7 @@ bool DBman::perform(int sock){
 					return this->send_msg(sock, RESP_OK);
 				}else if(!strcmp(request_type, "pz")){
 					///receives: id
-                    ///returns: RESP_OK
+					///returns: RESP_OK
 					if(!document.HasMember("id") || !document["id"].IsInt()) return this->send_msg(sock, REQUEST_UNDEF);
 					int id = document["id"].GetInt();
 					DatabaseManager::ErrorID eid;
@@ -267,8 +267,73 @@ bool DBman::perform(int sock){
 					}
 					return this->send_msg(sock, RESP_OK);
 				}
-			}/*else if(!strcmp(request, "change")){
-			}*/ //TODO
+			}else if(!strcmp(request, "change")){
+				if(!strcmp(request_type, "item")){
+					///receives: id, type, new_comment
+                        		///returns: response
+					if(!document.HasMember("id") || !document["id"].IsInt() ||
+					   !document.HasMember("type") || !document["type"].IsString() ||
+					   !document.HasMember("new_comment") || !document["new_comment"].IsString()) return this->send_msg(sock, REQUEST_UNDEF);
+					DatabaseManager::ErrorID eid;
+					if(!this->instances[sock]->update_item(document["id"].GetInt(), document["type"].GetString(), document["new_comment"].GetString(), &eid)){
+						return this->send_msg(sock, this->instances[sock]->error(eid));
+					}
+					return this->send_msg(sock, RESP_OK);
+				}else if(!strcmp(request_type, "type")){
+					///receives: id, new_name, new_comment
+                        		///returns: full entry
+					if(!document.HasMember("id") || !document["id"].IsString() ||
+					   !((document.HasMember("new_name") && document["new_name"].IsString()) ||
+					   (document.HasMember("new_comment") && document["new_comment"].IsString()))) return this->send_msg(sock, REQUEST_UNDEF);
+					DatabaseManager::ErrorID eid;
+					if(!this->instances[sock]->update_type(document["id"].GetString(), (document.HasMember("new_name") && document["new_name"].IsString()), document["new_name"].GetString(), (document.HasMember("new_comment") && document["new_comment"].IsString()), document["new_comment"].GetString(), &eid)){
+						return this->send_msg(sock, this->instances[sock]->error(eid));
+					}
+					
+					std::string response("{\"response\":\"ok\",\"type\":");
+					response += this->instances[sock]->get_type_json(document["id"].GetString(), &eid);
+					response += "}";
+					return this->send_msg(sock, response);
+				}else if(!strcmp(request_type, "wz")){
+					///receives: id, new_date, new_person, new_comment
+                        		///returns: full entry without items
+					if(!document.HasMember("id") || !document["id"].IsInt() ||
+					   !((document.HasMember("new_date") && document["new_date"].IsString()) ||
+					   (document.HasMember("new_person") && document["new_person"].IsString()) ||
+					   (document.HasMember("new_comment") && document["new_comment"].IsString()))) return this->send_msg(sock, REQUEST_UNDEF);
+					DatabaseManager::ErrorID eid;
+					if(!this->instances[sock]->update_wz(document["id"].GetInt(), 
+						(document.HasMember("new_date") && document["new_date"].IsString()), document["new_date"].GetString(),
+						(document.HasMember("new_person") && document["new_person"].IsString()), document["new_person"].GetString(),
+						(document.HasMember("new_comment") && document["new_comment"].IsString()), document["new_comment"].GetString(), &eid)){
+						return this->send_msg(sock, this->instances[sock]->error(eid));
+					}
+					
+					std::string response("{\"response\":\"ok\",\"wz\":");
+					response += this->instances[sock]->get_wz_json(document["id"].GetInt(), &eid);
+					response += "}";
+					return this->send_msg(sock, response);
+				}else if(!strcmp(request_type, "pz")){
+					///receives: id, new_date, new_person, new_comment
+                        		///returns: full entry
+					if(!document.HasMember("id") || !document["id"].IsInt() ||
+					   !((document.HasMember("new_date") && document["new_date"].IsString()) ||
+					   (document.HasMember("new_person") && document["new_person"].IsString()) ||
+					   (document.HasMember("new_comment") && document["new_comment"].IsString()))) return this->send_msg(sock, REQUEST_UNDEF);
+					DatabaseManager::ErrorID eid;
+					if(!this->instances[sock]->update_pz(document["id"].GetInt(), 
+						(document.HasMember("new_date") && document["new_date"].IsString()), document["new_date"].GetString(),
+						(document.HasMember("new_person") && document["new_person"].IsString()), document["new_person"].GetString(),
+						(document.HasMember("new_comment") && document["new_comment"].IsString()), document["new_comment"].GetString(), &eid)){
+						return this->send_msg(sock, this->instances[sock]->error(eid));
+					}
+					
+					std::string response("{\"response\":\"ok\",\"pz\":");
+					response += this->instances[sock]->get_pz_json(document["id"].GetInt(), &eid);
+					response += "}";
+					return this->send_msg(sock, response);
+				}
+			}
 		}
 		//if there are any requests without request_type, they will appear here
 		return this->send_msg(sock, REQUEST_UNDEF);
