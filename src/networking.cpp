@@ -153,4 +153,6 @@ void * networking_handler(void*){
                 }
             }
         }
+	
+	delete db;
 }
