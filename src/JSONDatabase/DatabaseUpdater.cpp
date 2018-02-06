@@ -1,7 +1,7 @@
 #include "JSONDatabase.h"
 
 bool JSONDatabase::update_item(int id, std::string type, std::string comment, ErrorID * errorid){
-    return this->update_item(id, type, comment, errorid);
+    return this->update_item(id, type, false, 0, true, comment, errorid);
 }
 
 bool JSONDatabase::update_item(int id, std::string type, /*bool update_id, int new_id, */bool update_wz, int wz_id, bool update_comment, std::string comment, ErrorID * errorid){

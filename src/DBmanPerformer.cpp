@@ -282,11 +282,15 @@ bool DBman::perform(int sock){
 				}else if(!strcmp(request_type, "type")){
 					///receives: id, new_name, new_comment
                         		///returns: full entry
+					bool new_name = document.HasMember("new_name") && document["new_name"].IsString();
+					bool new_comment = document.HasMember("new_comment") && document["new_comment"].IsString();
 					if(!document.HasMember("id") || !document["id"].IsString() ||
-					   !((document.HasMember("new_name") && document["new_name"].IsString()) ||
-					   (document.HasMember("new_comment") && document["new_comment"].IsString()))) return this->send_msg(sock, REQUEST_UNDEF);
+					   !(new_name || new_comment)) return this->send_msg(sock, REQUEST_UNDEF);
+					char * new_name_str = ""; char * new_comment_str = "";
+					if(new_name) new_name_str = (char*)document["new_name"].GetString();
+					if(new_comment) new_comment_str = (char*)document["new_comment"].GetString();
 					DatabaseManager::ErrorID eid;
-					if(!this->instances[sock]->update_type(document["id"].GetString(), (document.HasMember("new_name") && document["new_name"].IsString()), document["new_name"].GetString(), (document.HasMember("new_comment") && document["new_comment"].IsString()), document["new_comment"].GetString(), &eid)){
+					if(!this->instances[sock]->update_type(document["id"].GetString(), new_name, new_name_str, new_comment, new_comment_str, &eid)){
 						return this->send_msg(sock, this->instances[sock]->error(eid));
 					}
 					
@@ -297,15 +301,20 @@ bool DBman::perform(int sock){
 				}else if(!strcmp(request_type, "wz")){
 					///receives: id, new_date, new_person, new_comment
                         		///returns: full entry without items
+					bool new_date = document.HasMember("new_date") && document["new_date"].IsString();
+					bool new_person = document.HasMember("new_person") && document["new_person"].IsString();
+					bool new_comment = document.HasMember("new_comment") && document["new_comment"].IsString();
 					if(!document.HasMember("id") || !document["id"].IsInt() ||
-					   !((document.HasMember("new_date") && document["new_date"].IsString()) ||
-					   (document.HasMember("new_person") && document["new_person"].IsString()) ||
-					   (document.HasMember("new_comment") && document["new_comment"].IsString()))) return this->send_msg(sock, REQUEST_UNDEF);
+					   !(new_date || new_person || new_comment)) return this->send_msg(sock, REQUEST_UNDEF);
+					char * new_date_str = ""; char * new_person_str = ""; char * new_comment_str = "";
+					if(new_date) new_date_str = (char*)document["new_date"].GetString();
+					if(new_person) new_date_str = (char*)document["new_person"].GetString();
+					if(new_comment) new_comment_str = (char*)document["new_comment"].GetString();
 					DatabaseManager::ErrorID eid;
 					if(!this->instances[sock]->update_wz(document["id"].GetInt(), 
-						(document.HasMember("new_date") && document["new_date"].IsString()), document["new_date"].GetString(),
-						(document.HasMember("new_person") && document["new_person"].IsString()), document["new_person"].GetString(),
-						(document.HasMember("new_comment") && document["new_comment"].IsString()), document["new_comment"].GetString(), &eid)){
+						new_date, new_date_str,
+						new_person, new_person_str,
+						new_comment, new_comment_str, &eid)){
 						return this->send_msg(sock, this->instances[sock]->error(eid));
 					}
 					
@@ -316,15 +325,20 @@ bool DBman::perform(int sock){
 				}else if(!strcmp(request_type, "pz")){
 					///receives: id, new_date, new_person, new_comment
                         		///returns: full entry
+					bool new_date = document.HasMember("new_date") && document["new_date"].IsString();
+					bool new_person = document.HasMember("new_person") && document["new_person"].IsString();
+					bool new_comment = document.HasMember("new_comment") && document["new_comment"].IsString();
 					if(!document.HasMember("id") || !document["id"].IsInt() ||
-					   !((document.HasMember("new_date") && document["new_date"].IsString()) ||
-					   (document.HasMember("new_person") && document["new_person"].IsString()) ||
-					   (document.HasMember("new_comment") && document["new_comment"].IsString()))) return this->send_msg(sock, REQUEST_UNDEF);
+					   !(new_date || new_person || new_comment)) return this->send_msg(sock, REQUEST_UNDEF);
+					char * new_date_str = ""; char * new_person_str = ""; char * new_comment_str = "";
+					if(new_date) new_date_str = (char*)document["new_date"].GetString();
+					if(new_person) new_date_str = (char*)document["new_person"].GetString();
+					if(new_comment) new_comment_str = (char*)document["new_comment"].GetString();
 					DatabaseManager::ErrorID eid;
 					if(!this->instances[sock]->update_pz(document["id"].GetInt(), 
-						(document.HasMember("new_date") && document["new_date"].IsString()), document["new_date"].GetString(),
-						(document.HasMember("new_person") && document["new_person"].IsString()), document["new_person"].GetString(),
-						(document.HasMember("new_comment") && document["new_comment"].IsString()), document["new_comment"].GetString(), &eid)){
+						new_date, new_date_str,
+						new_person, new_person_str,
+						new_comment, new_comment_str, &eid)){
 						return this->send_msg(sock, this->instances[sock]->error(eid));
 					}
 					
